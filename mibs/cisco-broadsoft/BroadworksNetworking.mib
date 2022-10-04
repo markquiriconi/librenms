@@ -1,0 +1,172 @@
+--===============================================================
+-- File Name : BroadworksNetworking.mib
+-- Author    : Cisco Inc.
+-- Copyright © 2022, Cisco, Inc. All rights reserved.
+-- Proprietary Property of Cisco, Inc.
+--===============================================================
+BroadworksNetworking DEFINITIONS ::= BEGIN
+  IMPORTS
+    MODULE-COMPLIANCE, OBJECT-GROUP
+      FROM SNMPv2-CONF
+    enterprises, MODULE-IDENTITY, OBJECT-TYPE, Unsigned32, Counter32, Gauge32, Integer32
+      FROM SNMPv2-SMI
+    DateAndTime, DisplayString, TimeStamp, TruthValue
+      FROM SNMPv2-TC;
+
+  ciscoBroadWorksMIB  MODULE-IDENTITY
+    LAST-UPDATED  "201910040000Z"
+    ORGANIZATION  "Cisco Systems, Inc."
+    CONTACT-INFO  "Cisco Systems
+Customer Service
+Postal: 170 W Tasman Drive
+San Jose, CA  95134
+USA
+Tel: +1 800 553-NETS
+E-mail: tac@cisco.com"
+    DESCRIPTION
+        "This is the System Management Information structure for the BroadWorks Networking Stats module."
+    REVISION    "201910040000Z"
+                DESCRIPTION    "Initial revision for BW-20387."
+    ::=  {  enterprises 6431  }
+
+  broadworks OBJECT IDENTIFIER
+    ::=  {  ciscoBroadWorksMIB 1  }
+
+  common OBJECT IDENTIFIER
+    ::=  {  broadworks 1  }
+
+  networking OBJECT IDENTIFIER
+    ::=  {  common 12  }
+
+  stats OBJECT IDENTIFIER
+    ::=  {  networking 1  }
+
+-- MIB Compliance - Root
+  bwNetworkingMibConformance OBJECT IDENTIFIER
+    ::=  {  networking 1000  }
+
+  latency OBJECT IDENTIFIER
+    ::=  {  stats 1  }
+
+-- MIB Compliance - Groups
+  bwNetworkingGroups OBJECT IDENTIFIER
+    ::=  {  bwNetworkingMibConformance 1  }
+
+-- MIB Compliance - Module
+  bwNetworkingCompliancy OBJECT IDENTIFIER
+    ::=  {  bwNetworkingMibConformance 2  }
+
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).networking(12).stats(1).latency(1)
+-- ###################
+
+  bwNetworkLatencyTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF BwNetworkLatencyEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+    "This table contains gauges for the network latency."
+-- @feature:BW-20387
+    ::=  {  latency 1  }
+
+  bwNetworkLatencyEntry OBJECT-TYPE
+    SYNTAX      BwNetworkLatencyEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "This table contains statistics for network latency measurements."
+    INDEX       { bwNetworkLatencyIndex }
+-- @feature:BW-20387
+    ::=  {  bwNetworkLatencyTable 1  }
+
+  BwNetworkLatencyEntry ::= SEQUENCE {
+    bwNetworkLatencyIndex  Unsigned32,
+    bwNetworkLatencyHost  DisplayString,
+    bwNetworkLatencyUpdateTimestamp  DateAndTime,
+    bwNetworkLatencyRoundTripTimeMin  Gauge32,
+    bwNetworkLatencyRoundTripTimeAvg  Gauge32,
+    bwNetworkLatencyRoundTripTimeMax  Gauge32,
+    bwNetworkLatencyPacketLoss  Gauge32
+  }
+
+  bwNetworkLatencyIndex OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "TThis integer represents an index in table bwNetworkLatencyTable.  The index represents a single host."
+-- @feature:BW-20387
+    ::=  {  bwNetworkLatencyEntry 1  }
+
+  bwNetworkLatencyHost OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Name of the host associated with the corresponding bwNetworkLatencyIndex."
+-- @feature:BW-20387
+    ::=  {  bwNetworkLatencyEntry 2  }
+
+  bwNetworkLatencyUpdateTimestamp OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the time stamp indicating when the network latency was measured."
+-- @feature:BW-20387
+    ::=  {  bwNetworkLatencyEntry 3  }
+
+  bwNetworkLatencyRoundTripTimeMin OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Indicates the minimum packet response time for the host associated with the corresponding bwNetworkLatencyIndex."
+-- @feature:BW-20387
+    ::=  {  bwNetworkLatencyEntry 4  }
+
+  bwNetworkLatencyRoundTripTimeAvg OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Indicates the average packet response time for the host associated with the corresponding bwNetworkLatencyIndex."
+-- @feature:BW-20387
+    ::=  {  bwNetworkLatencyEntry 5  }
+
+  bwNetworkLatencyRoundTripTimeMax OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Indicates the maximum packet response time for the host associated with the corresponding bwNetworkLatencyIndex."
+-- @feature:BW-20387
+    ::=  {  bwNetworkLatencyEntry 6  }
+
+  bwNetworkLatencyPacketLoss OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Indicates the percentage of packet loss for the host associated with the corresponding bwNetworkLatencyIndex."
+-- @feature:BW-20387
+    ::=  {  bwNetworkLatencyEntry 7  }
+
+-- BroadWorks MIB Conformance Definition  ...........................................
+
+  broadworksnetworkingLatencyGrp OBJECT-GROUP
+    OBJECTS { bwNetworkLatencyHost, bwNetworkLatencyUpdateTimestamp, bwNetworkLatencyRoundTripTimeMin, bwNetworkLatencyRoundTripTimeAvg, bwNetworkLatencyRoundTripTimeMax, bwNetworkLatencyPacketLoss }
+    STATUS  current
+    DESCRIPTION "This group defines the statistics for networking stats latency."
+    ::=  {  bwNetworkingGroups 1  }
+
+  bwNetworkingBasicCompliance MODULE-COMPLIANCE
+    STATUS      current
+    DESCRIPTION
+        "BroadworksNetworking MIB compliance."
+    MODULE
+      MANDATORY-GROUPS { broadworksnetworkingLatencyGrp }
+    ::=  {  bwNetworkingCompliancy 1  }
+
+END

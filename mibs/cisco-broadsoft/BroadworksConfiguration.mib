@@ -1,0 +1,1832 @@
+--===============================================================
+-- File Name : BroadworksConfiguration.mib
+-- Author    : Cisco Inc.
+-- Copyright © 2022, Cisco, Inc. All rights reserved.
+-- Proprietary Property of Cisco, Inc.
+--===============================================================
+BroadworksConfiguration DEFINITIONS ::= BEGIN
+  IMPORTS
+    MODULE-COMPLIANCE, OBJECT-GROUP
+      FROM SNMPv2-CONF
+    enterprises, MODULE-IDENTITY, NOTIFICATION-TYPE, OBJECT-TYPE, Unsigned32, Counter32, Gauge32, Integer32
+      FROM SNMPv2-SMI
+    DateAndTime, DisplayString, TimeStamp, TruthValue
+      FROM SNMPv2-TC;
+
+  ciscoBroadWorksMIB  MODULE-IDENTITY
+    LAST-UPDATED  "201910200000Z"
+    ORGANIZATION  "Cisco Systems, Inc."
+    CONTACT-INFO  "Cisco Systems
+Customer Service
+Postal: 170 W Tasman Drive
+San Jose, CA  95134
+USA
+Tel: +1 800 553-NETS
+E-mail: tac@cisco.com"
+    DESCRIPTION
+        "This is the System Management Information structure for the BroadSoft Configuration subsystem."
+    REVISION    "201910200000Z"
+                DESCRIPTION    "Updated contact and identity info for MIB compliancy."
+    REVISION    "201502060000Z"
+                DESCRIPTION    "Updated description for JVM counters."
+    REVISION    "201501200000Z"
+                DESCRIPTION    "Added counters for heap, nonheap and garbageCollection Resources."
+    REVISION    "200902090000Z"
+                DESCRIPTION    "Ensured MIB conformity."
+    ::=  {  enterprises 6431  }
+
+  broadworks OBJECT IDENTIFIER
+    ::=  {  ciscoBroadWorksMIB 1  }
+
+  common OBJECT IDENTIFIER
+    ::=  {  broadworks 1  }
+
+  configurationMgmt OBJECT IDENTIFIER
+    ::=  {  common 5  }
+
+  cfgAgentState OBJECT IDENTIFIER
+    ::=  {  configurationMgmt 1  }
+
+  cfgCurrentConfig OBJECT IDENTIFIER
+    ::=  {  configurationMgmt 2  }
+
+  cfgStatistics OBJECT IDENTIFIER
+    ::=  {  configurationMgmt 3  }
+
+  processMetrics OBJECT IDENTIFIER
+    ::=  {  configurationMgmt 4  }
+
+  protocols OBJECT IDENTIFIER
+    ::=  {  configurationMgmt 5  }
+
+  concurrent OBJECT IDENTIFIER
+    ::=  {  configurationMgmt 6  }
+
+  executors OBJECT IDENTIFIER
+    ::=  {  configurationMgmt 7  }
+
+  kafka OBJECT IDENTIFIER
+    ::=  {  configurationMgmt 8  }
+
+  memory OBJECT IDENTIFIER
+    ::=  {  processMetrics 1  }
+
+  heap OBJECT IDENTIFIER
+    ::=  {  memory 1  }
+
+  nonheap OBJECT IDENTIFIER
+    ::=  {  memory 2  }
+
+  garbageCollection OBJECT IDENTIFIER
+    ::=  {  memory 3  }
+
+  tcp OBJECT IDENTIFIER
+    ::=  {  protocols 1  }
+
+  netconf OBJECT IDENTIFIER
+    ::=  {  protocols 2  }
+
+  kafkaProducerStats OBJECT IDENTIFIER
+    ::=  {  kafka 1  }
+
+  kafkaLoggingStats OBJECT IDENTIFIER
+    ::=  {  kafka 2  }
+
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).configurationMgmt(5).cfgAgentState(1)
+-- ###################
+
+  cfgConnectedClients OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Current number of active client connections."
+    ::=  {  cfgAgentState 1  }
+
+  cfgManagementMode OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      standalone (0),
+      managed (1),
+      replicated (2),
+      replica (3) }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Current management mode: { standalone | managed | replicated | replica }"
+-- @feature:158606
+    ::=  {  cfgAgentState 2  }
+
+  cfgSchemaVersion OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Configuration schema used by the agent."
+    ::=  {  cfgAgentState 3  }
+
+  cfgRequiresRestart OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      true (1),
+      false (2) }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Requires a BroadWorks restart to deploy a pending configuration."
+    ::=  {  cfgAgentState 4  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).configurationMgmt(5).cfgCurrentConfig(2)
+-- ###################
+
+  cfgCurrentVersion OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Current configuration version."
+    ::=  {  cfgCurrentConfig 1  }
+
+  cfgCurrentSchemaVersion OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Current configuration schema version."
+    ::=  {  cfgCurrentConfig 2  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).configurationMgmt(5).cfgStatistics(3)
+-- ###################
+
+  cfgReadOperations OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Total number of successful read operations."
+    ::=  {  cfgStatistics 1  }
+
+  cfgReadErrors OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Total number of failed read operations."
+    ::=  {  cfgStatistics 2  }
+
+  cfgWriteOperations OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Total number of successful write operations."
+    ::=  {  cfgStatistics 3  }
+
+  cfgWriteErrors OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Total number of failed write operations."
+    ::=  {  cfgStatistics 4  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).configurationMgmt(5).processMetrics(4).memory(1).heap(1)
+-- ###################
+
+  cfgProcessMetricsHeapInitSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the initial amount of memory that is allocated upon process startup (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  heap 1  }
+
+  cfgProcessMetricsHeapMaxSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the maximum amount of memory that is allocated during the process life (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  heap 2  }
+
+  cfgProcessMetricsHeapUsed OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the amount of memory currently in use (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  heap 3  }
+
+  cfgProcessMetricsHeapUsedMax OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the maximum amount of memory that has been used since the process started (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  heap 4  }
+
+  cfgProcessMetricsHeapCommitted OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the amount of memory currently committed by the process (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  heap 5  }
+
+  cfgProcessMetricsHeapLastPostCollectionSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the size of the heap after a major garbage collection (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  heap 6  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).configurationMgmt(5).processMetrics(4).memory(1).nonheap(2)
+-- ###################
+
+  cfgProcessMetricsNonHeapInitSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the initial amount of memory that is allocated upon process startup (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  nonheap 1  }
+
+  cfgProcessMetricsNonHeapMaxSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the maximum amount of memory that is allocated during the process life (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  nonheap 2  }
+
+  cfgProcessMetricsNonHeapUsed OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the amount of memory currently in use (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  nonheap 3  }
+
+  cfgProcessMetricsNonHeapUsedMax OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the maximum amount of memory that has been used since the process started (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  nonheap 4  }
+
+  cfgProcessMetricsNonHeapCommitted OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the amount of memory currently committed by the process (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  nonheap 5  }
+
+  cfgProcessMetricsNonHeapLastPostCollectionSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the size of the non-heap after a major garbage collection (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  nonheap 6  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).configurationMgmt(5).processMetrics(4).memory(1).garbageCollection(3)
+-- ###################
+
+  cfgProcessMetricsGCMinorCollectionsCount OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The number of minor collections."
+-- @feature:BW-6517
+    ::=  {  garbageCollection 1  }
+
+  cfgProcessMetricsGCMajorCollectionsCount OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The number of major collections."
+-- @feature:BW-6517
+    ::=  {  garbageCollection 2  }
+
+  cfgProcessMetricsGCMinorCollectionTimestamp OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the time stamp indicating when the last minor collection occurred."
+-- @feature:BW-6517
+    ::=  {  garbageCollection 3  }
+
+  cfgProcessMetricsGCMajorCollectionTimestamp OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the time stamp indicating when the last major collection occurred."
+-- @feature:BW-6517
+    ::=  {  garbageCollection 4  }
+
+  cfgProcessMetricsGCMinorCollectionAvg OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the average amount of memory claimed during minor collections (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  garbageCollection 5  }
+
+  cfgProcessMetricsGCMajorCollectionAvg OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the average amount of memory claimed during major collections (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  garbageCollection 6  }
+
+  cfgProcessMetricsGCMajColResetTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp of the last completed sampling period."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 7  }
+
+  cfgProcessMetricsGCMajColAvgCurrInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of cfgProcessMetricsGCMajorCollectionAvg in the current interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 8  }
+
+  cfgProcessMetricsGCMajColAvgLastInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of cfgProcessMetricsGCMajorCollectionAvg in the last interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 9  }
+
+  cfgProcessMetricsGCMinColResetTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp of the last completed sampling period."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 10  }
+
+  cfgProcessMetricsGCMinColAvgCurrInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of cfgProcessMetricsGCMinorCollectionAvg in the current interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 11  }
+
+  cfgProcessMetricsGCMinColAvgLastInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of cfgProcessMetricsGCMinorCollectionAvg in the last interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 12  }
+
+  cfgProcessMetricsGCMinColTimeBetweenAvg OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the average amount of time between minor garbage collections (in milliseconds)."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 13  }
+
+  cfgProcessMetricsGCMajColTimeBetweenAvg OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the average amount of time between major garbage collections (in milliseconds)."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 14  }
+
+  cfgProcessMetricsGCPauseTimeAvg OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the average amount of pause time for garbage collections (in milliseconds)."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 15  }
+
+  cfgProcessMetricsGCPauseTimeMax OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the max amount of pause time for garbage collections (in milliseconds)."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 16  }
+
+  cfgProcessMetricsGCPauseTimeMaxTimestamp OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp for the maximum pause time occurence."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 17  }
+
+  cfgProcessMetricsGCMinColTimeBetweenResetTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp of the last completed sampling period."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 18  }
+
+  cfgProcessMetricsGCMinColTimeBetweenAvgCurrInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of the average amount of time between minor garbage collections in the current interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 19  }
+
+  cfgProcessMetricsGCMinColTimeBetweenAvgLastInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of the average amount of time between minor garbage collections in the last interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 20  }
+
+  cfgProcessMetricsGCMajColTimeBetweenResetTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp of the last completed sampling period."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 21  }
+
+  cfgProcessMetricsGCMajColTimeBetweenAvgCurrInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of the average amount of time between major garbage collections in the current interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 22  }
+
+  cfgProcessMetricsGCMajColTimeBetweenAvgLastInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of the average amount of time between major garbage collections in the last interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 23  }
+
+  cfgProcessMetricsGCPauseTimeResetTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp of the last completed sampling period."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 24  }
+
+  cfgProcessMetricsGCPauseTimeAvgCurrInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of the average amount of pause time for garbage collections in the current interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 25  }
+
+  cfgProcessMetricsGCPauseTimeAvgLastInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of the average amount of pause time for garbage collections in the last interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 26  }
+
+  cfgProcessMetricsGCPauseTimeMaxCurrInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of the max amount of pause time for garbage collections in the current interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 27  }
+
+  cfgProcessMetricsGCPauseTimeMaxLastInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of the max amount of pause time for garbage collections in the last interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 28  }
+
+  cfgProcessMetricsGCPauseTimeMaxCurrIntTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp for the maximum pause time occurence of the current interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 29  }
+
+  cfgProcessMetricsGCPauseTimeMaxLastIntTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp for the maximum pause time occurence of the last interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 30  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).configurationMgmt(5).protocols(5).tcp(1)
+-- ###################
+
+  cfgTcpServersStatsTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF CfgTcpServersStatsEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+    "This table contains counters for TCP underlying framework for the Config Agent process."
+-- @feature:BW-9753
+    ::=  {  tcp 1  }
+
+  cfgTcpServersStatsEntry OBJECT-TYPE
+    SYNTAX      CfgTcpServersStatsEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "Definition of the entries for cfgTcpServersStatsTable."
+    INDEX       { cfgTcpServersStatsIndex }
+-- @feature:BW-9753
+    ::=  {  cfgTcpServersStatsTable 1  }
+
+  CfgTcpServersStatsEntry ::= SEQUENCE {
+    cfgTcpServersStatsIndex  Unsigned32,
+    cfgTcpServersName  DisplayString,
+    cfgTcpServersNbConnectionsAccepted  Counter32,
+    cfgTcpServersNbConnectionsRefused  Counter32,
+    cfgTcpServersNbConnectionsInitiated  Counter32,
+    cfgTcpServersNbConnectionsClosed  Counter32,
+    cfgTcpServersNbBytesSent  Gauge32,
+    cfgTcpServersNbBytesReceived  Gauge32,
+    cfgTcpServersOutgoingQueueSize  Gauge32,
+    cfgTcpServersIncomingQueueSize  Gauge32,
+    cfgTcpServersNbBytesSentSecure  Gauge32,
+    cfgTcpServersNbBytesReceivedSecure  Gauge32
+  }
+
+  cfgTcpServersStatsIndex OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This integer represents an index in table cfgTcpServersStatsTable. This is the index to a specific TCP server name."
+-- @feature:BW-9753
+    ::=  {  cfgTcpServersStatsEntry 1  }
+
+  cfgTcpServersName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The name of TCP server. Names are internally defined at the application level."
+-- @feature:BW-9753
+    ::=  {  cfgTcpServersStatsEntry 2  }
+
+  cfgTcpServersNbConnectionsAccepted OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This counter represents the number of connections accepted by the TCP server."
+-- @feature:BW-9753
+    ::=  {  cfgTcpServersStatsEntry 3  }
+
+  cfgTcpServersNbConnectionsRefused OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This counter represents the number of connections refused by the TCP server."
+-- @feature:BW-9753
+    ::=  {  cfgTcpServersStatsEntry 4  }
+
+  cfgTcpServersNbConnectionsInitiated OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This counter represents the number of connections initiated by the TCP server."
+-- @feature:BW-9753
+    ::=  {  cfgTcpServersStatsEntry 5  }
+
+  cfgTcpServersNbConnectionsClosed OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This counter represents the number of connections closed by the TCP server or remote hosts."
+-- @feature:BW-9753
+    ::=  {  cfgTcpServersStatsEntry 6  }
+
+  cfgTcpServersNbBytesSent OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This gauge represents the number of bytes sent by the TCP server."
+-- @feature:BW-9753
+    ::=  {  cfgTcpServersStatsEntry 7  }
+
+  cfgTcpServersNbBytesReceived OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This gauge represents the number of bytes received by the TCP server."
+-- @feature:BW-9753
+    ::=  {  cfgTcpServersStatsEntry 8  }
+
+  cfgTcpServersOutgoingQueueSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge represents the number of bytes in the outgoing queue."
+-- @feature:BW-9753
+    ::=  {  cfgTcpServersStatsEntry 9  }
+
+  cfgTcpServersIncomingQueueSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge represents the number of bytes in the incoming queue."
+-- @feature:BW-9753
+    ::=  {  cfgTcpServersStatsEntry 10  }
+
+  cfgTcpServersNbBytesSentSecure OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This gauge represents the number of bytes sent by the TCP server over secure connections."
+-- @feature:BW-9753
+    ::=  {  cfgTcpServersStatsEntry 11  }
+
+  cfgTcpServersNbBytesReceivedSecure OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This gauge represents the number of bytes received by the TCP server over secure connections."
+-- @feature:BW-9753
+    ::=  {  cfgTcpServersStatsEntry 12  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).configurationMgmt(5).protocols(5).netconf(2)
+-- ###################
+
+  cfgNetconfStatsTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF CfgNetconfStatsEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+    "This table contains counters for NETCONF for the Config Agent process."
+-- @feature:BW-9753
+    ::=  {  netconf 1  }
+
+  cfgNetconfStatsEntry OBJECT-TYPE
+    SYNTAX      CfgNetconfStatsEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "Definition of the entries for cfgNetconfStatsTable."
+    INDEX       { cfgNetconfStatsIndex }
+-- @feature:BW-9753
+    ::=  {  cfgNetconfStatsTable 1  }
+
+  CfgNetconfStatsEntry ::= SEQUENCE {
+    cfgNetconfStatsIndex  Unsigned32,
+    cfgNetconfHost  DisplayString,
+    cfgNetconfInterface  DisplayString,
+    cfgNetconfAcceptedInboundConnections  Counter32,
+    cfgNetconfRejectedInboundConnections  Counter32,
+    cfgNetconfOutputMessagesProcessed  Counter32,
+    cfgNetconfInputMessagesProcessed  Counter32,
+    cfgNetconfOutputCommunicationErrors  Counter32,
+    cfgNetconfInputCommunicationErrors  Counter32
+  }
+
+  cfgNetconfStatsIndex OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This integer represents an index in table cfgNetconfStatsTable. The index represents a connection for a specific host-interface combination."
+-- @feature:BW-9753
+    ::=  {  cfgNetconfStatsEntry 1  }
+
+  cfgNetconfHost OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The address of a host connected to the NETCONF interface."
+-- @feature:BW-9753
+    ::=  {  cfgNetconfStatsEntry 2  }
+
+  cfgNetconfInterface OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The IP address of a local interface that a host is bound to."
+-- @feature:BW-9753
+    ::=  {  cfgNetconfStatsEntry 3  }
+
+  cfgNetconfAcceptedInboundConnections OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This counter is incremented whenever a client in this process connects to the framework from a remote host, using the interface."
+-- @feature:BW-9753
+    ::=  {  cfgNetconfStatsEntry 4  }
+
+  cfgNetconfRejectedInboundConnections OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This counter is incremented whenever a client connection request coming to this host and going through this interface has been rejected by the framework."
+-- @feature:BW-9753
+    ::=  {  cfgNetconfStatsEntry 5  }
+
+  cfgNetconfOutputMessagesProcessed OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This counter is incremented whenever a message has been sent and processed for this host and interface."
+-- @feature:BW-9753
+    ::=  {  cfgNetconfStatsEntry 6  }
+
+  cfgNetconfInputMessagesProcessed OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This counter is incremented whenever a message has been received and processed for this host and interface."
+-- @feature:BW-9753
+    ::=  {  cfgNetconfStatsEntry 7  }
+
+  cfgNetconfOutputCommunicationErrors OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This counter is incremented whenever a message could not be read because the TCP stack returned an error."
+-- @feature:BW-9753
+    ::=  {  cfgNetconfStatsEntry 8  }
+
+  cfgNetconfInputCommunicationErrors OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This counter is incremented whenever a connection has been dropped by a client before the unregister message has been received."
+-- @feature:BW-9753
+    ::=  {  cfgNetconfStatsEntry 9  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).configurationMgmt(5).concurrent(6)
+-- ###################
+
+  cfgMonitoringExecutorTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF CfgMonitoringExecutorEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+    "This table contains counters for the concurrent framework."
+-- @feature:BW-9753
+    ::=  {  concurrent 1  }
+
+  cfgMonitoringExecutorEntry OBJECT-TYPE
+    SYNTAX      CfgMonitoringExecutorEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "Definition of the entries for cfgMonitoringExecutorTable."
+    INDEX       { cfgMonitoringExecutorIndex }
+-- @feature:BW-9753
+    ::=  {  cfgMonitoringExecutorTable 1  }
+
+  CfgMonitoringExecutorEntry ::= SEQUENCE {
+    cfgMonitoringExecutorIndex  Unsigned32,
+    cfgMonitoringExecutorName  DisplayString,
+    cfgMonitoringExecutorCurrentPoolSize  Gauge32,
+    cfgMonitoringExecutorMaxPoolSize  Gauge32,
+    cfgMonitoringExecutorAvgActiveThreads  Gauge32,
+    cfgMonitoringExecutorTaskQueueSize  Gauge32,
+    cfgMonitoringExecutorNbTasksRun  Counter32,
+    cfgMonitoringExecutorNbWarnings  Counter32,
+    cfgMonitoringExecutorNbErrors  Counter32,
+    cfgMonitoringExecutorLongestTaskMs  Gauge32,
+    cfgMonitoringExecutorLongestTaskName  DisplayString,
+    cfgMonitoringExecutorActiveThreadsResetTS  DateAndTime,
+    cfgMonitoringExecutorActiveThreadsAvgCurrInt  Gauge32,
+    cfgMonitoringExecutorActiveThreadsAvgLastInt  Gauge32
+  }
+
+  cfgMonitoringExecutorIndex OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This integer represents an index in table cfgMonitoringExecutorTable. This is the index to a specific monitoring executor name."
+-- @feature:BW-9753
+    ::=  {  cfgMonitoringExecutorEntry 1  }
+
+  cfgMonitoringExecutorName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The name of the monitoring executor. Names are internally defined at the application level."
+-- @feature:BW-9753
+    ::=  {  cfgMonitoringExecutorEntry 2  }
+
+  cfgMonitoringExecutorCurrentPoolSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The current thread pool size."
+-- @feature:BW-9753
+    ::=  {  cfgMonitoringExecutorEntry 3  }
+
+  cfgMonitoringExecutorMaxPoolSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The maximum thread pool size."
+-- @feature:BW-9753
+    ::=  {  cfgMonitoringExecutorEntry 4  }
+
+  cfgMonitoringExecutorAvgActiveThreads OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The average number of active threads, rounded up."
+-- @feature:BW-9753
+    ::=  {  cfgMonitoringExecutorEntry 5  }
+
+  cfgMonitoringExecutorTaskQueueSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Number of tasks in the queue (includes scheduled and recurring tasks)."
+-- @feature:BW-9753
+    ::=  {  cfgMonitoringExecutorEntry 6  }
+
+  cfgMonitoringExecutorNbTasksRun OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "Number of tasks run."
+-- @feature:BW-9753
+    ::=  {  cfgMonitoringExecutorEntry 7  }
+
+  cfgMonitoringExecutorNbWarnings OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "Number of warnings that occurred."
+-- @feature:BW-9753
+    ::=  {  cfgMonitoringExecutorEntry 8  }
+
+  cfgMonitoringExecutorNbErrors OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "Number of errors that occurred."
+-- @feature:BW-9753
+    ::=  {  cfgMonitoringExecutorEntry 9  }
+
+  cfgMonitoringExecutorLongestTaskMs OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Longest completed task execution time in milliseconds."
+-- @feature:BW-9753
+    ::=  {  cfgMonitoringExecutorEntry 10  }
+
+  cfgMonitoringExecutorLongestTaskName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Longest completed task name."
+-- @feature:BW-9753
+    ::=  {  cfgMonitoringExecutorEntry 11  }
+
+  cfgMonitoringExecutorActiveThreadsResetTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp of the last completed sampling period."
+-- @feature:BW-20387
+    ::=  {  cfgMonitoringExecutorEntry 12  }
+
+  cfgMonitoringExecutorActiveThreadsAvgCurrInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of cfgMonitoringExecutorAvgActiveThreads in the current interval."
+-- @feature:BW-20387
+    ::=  {  cfgMonitoringExecutorEntry 13  }
+
+  cfgMonitoringExecutorActiveThreadsAvgLastInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of cfgMonitoringExecutorAvgActiveThreads in the last interval."
+-- @feature:BW-20387
+    ::=  {  cfgMonitoringExecutorEntry 14  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).configurationMgmt(5).executors(7)
+-- ###################
+
+  cfgExecutorReset OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      reset (1) }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "When set to 1, all statistics stored under executorTable are reset to 0."
+-- @feature:BW-9753
+    ::=  {  executors 1  }
+
+  cfgExecutorTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF CfgExecutorTableEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+    "This table contains statistics about the executors."
+-- @feature:BW-9753
+    ::=  {  executors 2  }
+
+  cfgExecutorTableEntry OBJECT-TYPE
+    SYNTAX      CfgExecutorTableEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "This row contains the statistics for a given executor."
+    INDEX       { cfgExecutorIndex }
+-- @feature:BW-9753
+    ::=  {  cfgExecutorTable 1  }
+
+  CfgExecutorTableEntry ::= SEQUENCE {
+    cfgExecutorIndex  Unsigned32,
+    cfgExecutorName  DisplayString,
+    cfgExecutorQueueCapacity  Gauge32,
+    cfgExecutorQueueSize  Gauge32,
+    cfgExecutorQueueWaitingTimeAvg  Gauge32,
+    cfgExecutorQueueWaitingTimeMin  Gauge32,
+    cfgExecutorQueueWaitingTimeMax  Gauge32,
+    cfgExecutorQueueWaitingTimeMaxTimestampMSB  Gauge32,
+    cfgExecutorQueueWaitingTimeMaxTimestampLSB  Gauge32,
+    cfgExecutorMinPoolSize  Gauge32,
+    cfgExecutorMaxPoolSize  Gauge32,
+    cfgExecutorThreadsBusy  Gauge32,
+    cfgExecutorCompletedTaskCount  Counter32,
+    cfgExecutorThreadsAlive  Gauge32,
+    cfgExecutorThreadsAliveMax  Gauge32,
+    cfgExecutorTaskProcessingTimeAvg  Gauge32,
+    cfgExecutorTaskProcessingTimeMin  Gauge32,
+    cfgExecutorTaskProcessingTimeMax  Gauge32,
+    cfgExecutorTaskProcessingTimeMaxTimestampMSB  Gauge32,
+    cfgExecutorTaskProcessingTimeMaxTimestampLSB  Gauge32,
+    cfgExecutorQueueWaitingTimeMaxTimestamp  DateAndTime,
+    cfgExecutorTaskProcessingTimeMaxTimestamp  DateAndTime,
+    cfgExecutorQueueWaitingTimeResetTS  DateAndTime,
+    cfgExecutorQueueWaitingTimeAvgCurrInt  Gauge32,
+    cfgExecutorQueueWaitingTimeAvgLastInt  Gauge32,
+    cfgExecutorQueueWaitingTimeMinCurrInt  Gauge32,
+    cfgExecutorQueueWaitingTimeMinLastInt  Gauge32,
+    cfgExecutorQueueWaitingTimeMinCurrIntTS  DateAndTime,
+    cfgExecutorQueueWaitingTimeMinLastIntTS  DateAndTime,
+    cfgExecutorQueueWaitingTimeMaxCurrInt  Gauge32,
+    cfgExecutorQueueWaitingTimeMaxLastInt  Gauge32,
+    cfgExecutorQueueWaitingTimeMaxCurrIntTS  DateAndTime,
+    cfgExecutorQueueWaitingTimeMaxLastIntTS  DateAndTime,
+    cfgExecutorTaskProcessingTimeResetTS  DateAndTime,
+    cfgExecutorTaskProcessingTimeAvgCurrInt  Gauge32,
+    cfgExecutorTaskProcessingTimeAvgLastInt  Gauge32,
+    cfgExecutorTaskProcessingTimeMinCurrInt  Gauge32,
+    cfgExecutorTaskProcessingTimeMinLastInt  Gauge32,
+    cfgExecutorTaskProcessingTimeMinCurrIntTS  DateAndTime,
+    cfgExecutorTaskProcessingTimeMinLastIntTS  DateAndTime,
+    cfgExecutorTaskProcessingTimeMaxCurrInt  Gauge32,
+    cfgExecutorTaskProcessingTimeMaxLastInt  Gauge32,
+    cfgExecutorTaskProcessingTimeMaxCurrIntTS  DateAndTime,
+    cfgExecutorTaskProcessingTimeMaxLastIntTS  DateAndTime
+  }
+
+  cfgExecutorIndex OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This integer represents an index to a given executor."
+-- @feature:BW-9753
+    ::=  {  cfgExecutorTableEntry 1  }
+
+  cfgExecutorName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The name of this executor."
+-- @feature:BW-9753
+    ::=  {  cfgExecutorTableEntry 2  }
+
+  cfgExecutorQueueCapacity OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The executor queue initial capacity."
+-- @feature:BW-9753
+    ::=  {  cfgExecutorTableEntry 3  }
+
+  cfgExecutorQueueSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The current size of the executor queue."
+-- @feature:BW-9753
+    ::=  {  cfgExecutorTableEntry 4  }
+
+  cfgExecutorQueueWaitingTimeAvg OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Average time spent waiting in the executor queue since the last reset."
+-- @feature:BW-9753
+    ::=  {  cfgExecutorTableEntry 5  }
+
+  cfgExecutorQueueWaitingTimeMin OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Minimum time spent waiting in the executor queue since the last reset."
+-- @feature:BW-9753
+    ::=  {  cfgExecutorTableEntry 6  }
+
+  cfgExecutorQueueWaitingTimeMax OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Maximum time spent waiting in the executor queue since the last reset."
+-- @feature:BW-9753
+    ::=  {  cfgExecutorTableEntry 7  }
+
+  cfgExecutorQueueWaitingTimeMaxTimestampMSB OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      deprecated
+    DESCRIPTION
+      "The most significant part of the timestamp (4 most significant bytes) when cfgExecutorQueueWaitingTimeMax was obtained."
+-- @feature:BW-9753
+    ::=  {  cfgExecutorTableEntry 8  }
+
+  cfgExecutorQueueWaitingTimeMaxTimestampLSB OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      deprecated
+    DESCRIPTION
+      "The least significant part of the timestamp (4 least significant bytes) when cfgExecutorQueueWaitingTimeMax was obtained."
+-- @feature:BW-9753
+    ::=  {  cfgExecutorTableEntry 9  }
+
+  cfgExecutorMinPoolSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The number of threads to keep in the pool, even if they are idle."
+-- @feature:BW-9753
+    ::=  {  cfgExecutorTableEntry 10  }
+
+  cfgExecutorMaxPoolSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The maximum number of threads to allow in the pool."
+-- @feature:BW-9753
+    ::=  {  cfgExecutorTableEntry 11  }
+
+  cfgExecutorThreadsBusy OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The approximate number of threads that are actively executing tasks."
+-- @feature:BW-9753
+    ::=  {  cfgExecutorTableEntry 12  }
+
+  cfgExecutorCompletedTaskCount OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The approximate total number of tasks that have completed execution.  Because the states of tasks and threads may change dynamically during computation, the returned value is only an approximation, but one that does not ever decrease across successive calls."
+-- @feature:BW-9753
+    ::=  {  cfgExecutorTableEntry 13  }
+
+  cfgExecutorThreadsAlive OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The current number of threads instantiated."
+-- @feature:BW-9753
+    ::=  {  cfgExecutorTableEntry 14  }
+
+  cfgExecutorThreadsAliveMax OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The maximum number of threads that can be allocated at the same time."
+-- @feature:BW-9753
+    ::=  {  cfgExecutorTableEntry 15  }
+
+  cfgExecutorTaskProcessingTimeAvg OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Average processing time spent by this executor."
+-- @feature:BW-9753
+    ::=  {  cfgExecutorTableEntry 16  }
+
+  cfgExecutorTaskProcessingTimeMin OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Minimum processing time spent by this executor."
+-- @feature:BW-9753
+    ::=  {  cfgExecutorTableEntry 17  }
+
+  cfgExecutorTaskProcessingTimeMax OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Maximum processing time spent by this executor."
+-- @feature:BW-9753
+    ::=  {  cfgExecutorTableEntry 18  }
+
+  cfgExecutorTaskProcessingTimeMaxTimestampMSB OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      deprecated
+    DESCRIPTION
+      "The most significant part of the timestamp (4 most significant bytes) of when cfgExecutorTaskProcessingTimeMax was obtained."
+-- @feature:BW-9753
+    ::=  {  cfgExecutorTableEntry 19  }
+
+  cfgExecutorTaskProcessingTimeMaxTimestampLSB OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      deprecated
+    DESCRIPTION
+      "The least significant part of the timestamp (4 least significant bytes) of when cfgExecutorTaskProcessingTimeMax was obtained."
+-- @feature:BW-9753
+    ::=  {  cfgExecutorTableEntry 20  }
+
+  cfgExecutorQueueWaitingTimeMaxTimestamp OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the time stamp indicating when executorQueueWaitingTimeMax was obtained."
+-- @feature:BW-9753
+    ::=  {  cfgExecutorTableEntry 21  }
+
+  cfgExecutorTaskProcessingTimeMaxTimestamp OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The time stamp indicating when taskProcessingTimeMax was obtained."
+-- @feature:BW-9753
+    ::=  {  cfgExecutorTableEntry 22  }
+
+  cfgExecutorQueueWaitingTimeResetTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp of the last completed sampling period."
+-- @feature:BW-20387
+    ::=  {  cfgExecutorTableEntry 23  }
+
+  cfgExecutorQueueWaitingTimeAvgCurrInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of cfgExecutorQueueWaitingTimeAvg in the current interval."
+-- @feature:BW-20387
+    ::=  {  cfgExecutorTableEntry 24  }
+
+  cfgExecutorQueueWaitingTimeAvgLastInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of cfgExecutorQueueWaitingTimeAvg in the last interval."
+-- @feature:BW-20387
+    ::=  {  cfgExecutorTableEntry 25  }
+
+  cfgExecutorQueueWaitingTimeMinCurrInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of cfgExecutorQueueWaitingTimeMin in the current interval."
+-- @feature:BW-20387
+    ::=  {  cfgExecutorTableEntry 26  }
+
+  cfgExecutorQueueWaitingTimeMinLastInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of cfgExecutorQueueWaitingTimeMin in the last interval."
+-- @feature:BW-20387
+    ::=  {  cfgExecutorTableEntry 27  }
+
+  cfgExecutorQueueWaitingTimeMinCurrIntTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp at which the value of cfgExecutorQueueWaitingTimeMin was reached in the current interval."
+-- @feature:BW-20387
+    ::=  {  cfgExecutorTableEntry 28  }
+
+  cfgExecutorQueueWaitingTimeMinLastIntTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp at which the value of cfgExecutorQueueWaitingTimeMin was reached in the last interval."
+-- @feature:BW-20387
+    ::=  {  cfgExecutorTableEntry 29  }
+
+  cfgExecutorQueueWaitingTimeMaxCurrInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of cfgExecutorQueueWaitingTimeMax in the current interval."
+-- @feature:BW-20387
+    ::=  {  cfgExecutorTableEntry 30  }
+
+  cfgExecutorQueueWaitingTimeMaxLastInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of cfgExecutorQueueWaitingTimeMax in the last interval."
+-- @feature:BW-20387
+    ::=  {  cfgExecutorTableEntry 31  }
+
+  cfgExecutorQueueWaitingTimeMaxCurrIntTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp at which the value of cfgExecutorQueueWaitingTimeMax was reached in the current interval."
+-- @feature:BW-20387
+    ::=  {  cfgExecutorTableEntry 32  }
+
+  cfgExecutorQueueWaitingTimeMaxLastIntTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp at which the value of cfgExecutorQueueWaitingTimeMax was reached in the last interval."
+-- @feature:BW-20387
+    ::=  {  cfgExecutorTableEntry 33  }
+
+  cfgExecutorTaskProcessingTimeResetTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp of the last completed sampling period."
+-- @feature:BW-20387
+    ::=  {  cfgExecutorTableEntry 34  }
+
+  cfgExecutorTaskProcessingTimeAvgCurrInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of cfgExecutorTaskProcessingTimeAvg in the current interval."
+-- @feature:BW-20387
+    ::=  {  cfgExecutorTableEntry 35  }
+
+  cfgExecutorTaskProcessingTimeAvgLastInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of cfgExecutorTaskProcessingTimeAvg in the last interval."
+-- @feature:BW-20387
+    ::=  {  cfgExecutorTableEntry 36  }
+
+  cfgExecutorTaskProcessingTimeMinCurrInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of cfgExecutorTaskProcessingTimeMin in the current interval."
+-- @feature:BW-20387
+    ::=  {  cfgExecutorTableEntry 37  }
+
+  cfgExecutorTaskProcessingTimeMinLastInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of cfgExecutorTaskProcessingTimeMin in the last interval."
+-- @feature:BW-20387
+    ::=  {  cfgExecutorTableEntry 38  }
+
+  cfgExecutorTaskProcessingTimeMinCurrIntTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp at which the value of cfgExecutorTaskProcessingTimeMin was reached in the current interval."
+-- @feature:BW-20387
+    ::=  {  cfgExecutorTableEntry 39  }
+
+  cfgExecutorTaskProcessingTimeMinLastIntTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp at which the value of cfgExecutorTaskProcessingTimeMin was reached in the last interval."
+-- @feature:BW-20387
+    ::=  {  cfgExecutorTableEntry 40  }
+
+  cfgExecutorTaskProcessingTimeMaxCurrInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of cfgExecutorTaskProcessingTimeMax in the current interval."
+-- @feature:BW-20387
+    ::=  {  cfgExecutorTableEntry 41  }
+
+  cfgExecutorTaskProcessingTimeMaxLastInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of cfgExecutorTaskProcessingTimeMax in the last interval."
+-- @feature:BW-20387
+    ::=  {  cfgExecutorTableEntry 42  }
+
+  cfgExecutorTaskProcessingTimeMaxCurrIntTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp at which the value of cfgExecutorTaskProcessingTimeMax was reached in the current interval."
+-- @feature:BW-20387
+    ::=  {  cfgExecutorTableEntry 43  }
+
+  cfgExecutorTaskProcessingTimeMaxLastIntTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp at which the value of cfgExecutorTaskProcessingTimeMax was reached in the last interval."
+-- @feature:BW-20387
+    ::=  {  cfgExecutorTableEntry 44  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).configurationMgmt(5).kafka(8).kafkaProducerStats(1)
+-- ###################
+
+  cfgKafkaProducerTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF CfgKafkaProducerEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+    "This table contains counters for the Kafka Producers."
+-- @feature:BWKS-917
+    ::=  {  kafkaProducerStats 1  }
+
+  cfgKafkaProducerEntry OBJECT-TYPE
+    SYNTAX      CfgKafkaProducerEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "Definition of the entries for cfgKafkaProducerTable."
+    INDEX       { cfgKafkaProducerIndex }
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerTable 1  }
+
+  CfgKafkaProducerEntry ::= SEQUENCE {
+    cfgKafkaProducerIndex  Unsigned32,
+    cfgKafkaProducerName  DisplayString,
+    cfgKafkaProducerBatchSizeAvg  Gauge32,
+    cfgKafkaProducerBatchSizeMax  Gauge32,
+    cfgKafkaProducerBufferAvailableBytes  Gauge32,
+    cfgKafkaProducerBufferTotalBytes  Gauge32,
+    cfgKafkaProducerBufferpoolWaitTime  Gauge32,
+    cfgKafkaProducerConnectionCount  Gauge32,
+    cfgKafkaProducerRecordErrorRate  Gauge32,
+    cfgKafkaProducerRecordSendRate  Gauge32,
+    cfgKafkaProducerRecordErrorTotal  Counter32,
+    cfgKafkaProducerRecordSendTotal  Counter32,
+    cfgKafkaProducerRecordRetryRate  Gauge32,
+    cfgKafkaProducerRecordRetryTotal  Counter32,
+    cfgKafkaProducerRecordQueueTimeAvg  Gauge32,
+    cfgKafkaProducerRecordQueueTimeMax  Gauge32,
+    cfgKafkaProducerRecordsPerRequestAvg  Gauge32,
+    cfgKafkaProducerRequestsInFlight  Gauge32,
+    cfgKafkaProducerRequestLatencyAvg  Gauge32,
+    cfgKafkaProducerRequestLatencyMax  Gauge32,
+    cfgKafkaProducerWaitingThreads  Gauge32,
+    cfgKafkaProducerCompressionRateAvg  Gauge32,
+    cfgKafkaProducerApplicationDroppedTotal  Counter32,
+    cfgKafkaProducerApplicationQueueSize  Gauge32
+  }
+
+  cfgKafkaProducerIndex OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This integer represents an index in table cfgKafkaProducerTable. This is the index to a specific Kafka Producer name."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 1  }
+
+  cfgKafkaProducerName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The name of the Kafka Producer - Names are internally defined at the application level."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 2  }
+
+  cfgKafkaProducerBatchSizeAvg OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the average number of bytes sent in a request, in batch mode, to the brokers."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 3  }
+
+  cfgKafkaProducerBatchSizeMax OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the max number of bytes sent in a request, in batch mode, to the brokers."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 4  }
+
+  cfgKafkaProducerBufferAvailableBytes OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the total amount of buffer memory available for use by the producer."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 5  }
+
+  cfgKafkaProducerBufferTotalBytes OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the maximum number of bytes in memory the producer can use for buffering events (it does not depict the actual memory in use)."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 6  }
+
+  cfgKafkaProducerBufferpoolWaitTime OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the fraction of time the producer waits for space to be allocated within the buffer pool."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 7  }
+
+  cfgKafkaProducerConnectionCount OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the current number of active connections between the producer and the brokers."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 8  }
+
+  cfgKafkaProducerRecordErrorRate OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the average number of records (per second) sent by the producer to the brokers, that resulted in errors."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 9  }
+
+  cfgKafkaProducerRecordSendRate OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the average number of records (per second) sent by the producer to the brokers."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 10  }
+
+  cfgKafkaProducerRecordErrorTotal OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This counter tracks the total number of records sent by the producer to the brokers that resulted in errors."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 11  }
+
+  cfgKafkaProducerRecordSendTotal OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This counter tracks the total number of records sent by the producer to the brokers."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 12  }
+
+  cfgKafkaProducerRecordRetryRate OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the average number of retried records (per second) sent by the producer to the brokers."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 13  }
+
+  cfgKafkaProducerRecordRetryTotal OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This counter tracks the total number of retried records sent by the producer to the brokers."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 14  }
+
+  cfgKafkaProducerRecordQueueTimeAvg OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the average time (in milliseconds) records spend in the send buffer, in batch mode, before the producer actually sends them to the brokers."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 15  }
+
+  cfgKafkaProducerRecordQueueTimeMax OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the maximum time (in milliseconds) records spend in the send buffer, in batch mode, before the producer actually sends them to the brokers."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 16  }
+
+  cfgKafkaProducerRecordsPerRequestAvg OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the average number of records sent per request, in batch mode, to the brokers."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 17  }
+
+  cfgKafkaProducerRequestsInFlight OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the current number of in-flight requests the producer has sent to the brokers, and is awaiting a response."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 18  }
+
+  cfgKafkaProducerRequestLatencyAvg OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the average request latency (in milliseconds) for requests sent from the producer to the brokers."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 19  }
+
+  cfgKafkaProducerRequestLatencyMax OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the maximum request latency (in milliseconds) for requests sent from the producer to the brokers."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 20  }
+
+  cfgKafkaProducerWaitingThreads OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the number of producer threads that are blocked waiting for buffer memory, to enqueue their records."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 21  }
+
+  cfgKafkaProducerCompressionRateAvg OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the average compression rate of record batches, defined as the average ratio of the compressed batch size over the uncompressed size. The value is in percentage."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 22  }
+
+  cfgKafkaProducerApplicationDroppedTotal OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-only
+    STATUS      obsolete
+    DESCRIPTION
+      "This gauge tracks the number of records dropped by the application before reaching the producer."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 23  }
+
+  cfgKafkaProducerApplicationQueueSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      obsolete
+    DESCRIPTION
+      "This gauge tracks the size of the Kafka output channel queue."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaProducerEntry 24  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).configurationMgmt(5).kafka(8).kafkaLoggingStats(2)
+-- ###################
+
+  cfgKafkaLoggingTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF CfgKafkaLoggingEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+    "This table contains counters for the Kafka output channels."
+-- @feature:BWKS-917
+    ::=  {  kafkaLoggingStats 2  }
+
+  cfgKafkaLoggingEntry OBJECT-TYPE
+    SYNTAX      CfgKafkaLoggingEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "Definition of the entries for cfgKafkaLoggingTable."
+    INDEX       { cfgKafkaLoggingIndex }
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaLoggingTable 1  }
+
+  CfgKafkaLoggingEntry ::= SEQUENCE {
+    cfgKafkaLoggingIndex  Unsigned32,
+    cfgKafkaLoggingSubsystemName  DisplayString,
+    cfgKafkaLoggingApplicationDroppedTotal  Counter32,
+    cfgKafkaLoggingApplicationQueueSize  Gauge32,
+    cfgKafkaLoggingApplicationQueueCapacity  Gauge32
+  }
+
+  cfgKafkaLoggingIndex OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This integer represents an index in table cfgKafkaLoggingTable. This is the index to a specific logging subsystem."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaLoggingEntry 1  }
+
+  cfgKafkaLoggingSubsystemName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The name of the logging subsystem that is using Kafka for logging."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaLoggingEntry 2  }
+
+  cfgKafkaLoggingApplicationDroppedTotal OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the number of records dropped by the application before reaching the producer."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaLoggingEntry 3  }
+
+  cfgKafkaLoggingApplicationQueueSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the size of the Kafka output channel queue."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaLoggingEntry 4  }
+
+  cfgKafkaLoggingApplicationQueueCapacity OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the capacity of the Kafka output channel queue."
+-- @feature:BWKS-917
+    ::=  {  cfgKafkaLoggingEntry 5  }
+
+
+END

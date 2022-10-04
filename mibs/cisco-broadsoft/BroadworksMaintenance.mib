@@ -1,0 +1,2339 @@
+--===============================================================
+-- File Name : BroadworksMaintenance.mib
+-- Author    : Cisco Inc.
+-- Copyright © 2022, Cisco, Inc. All rights reserved.
+-- Proprietary Property of Cisco, Inc.
+--===============================================================
+BroadworksMaintenance DEFINITIONS ::= BEGIN
+  IMPORTS
+    MODULE-COMPLIANCE, OBJECT-GROUP
+      FROM SNMPv2-CONF
+    enterprises, MODULE-IDENTITY, NOTIFICATION-TYPE, OBJECT-TYPE, Unsigned32, Counter32, Gauge32, Integer32
+      FROM SNMPv2-SMI
+    DateAndTime, DisplayString, TimeStamp
+      FROM SNMPv2-TC;
+
+  ciscoBroadWorksMIB  MODULE-IDENTITY
+    LAST-UPDATED  "201910160000Z"
+    ORGANIZATION  "Cisco Systems, Inc."
+    CONTACT-INFO  "Cisco Systems
+Customer Service
+Postal: 170 W Tasman Drive
+San Jose, CA  95134
+USA
+Tel: +1 800 553-NETS
+E-mail: tac@cisco.com"
+    DESCRIPTION
+        "This is the System Management Information structure for the BroadWorks maintenance."
+    REVISION    "201910160000Z"
+                DESCRIPTION    "Updated module identity for MIB compliancy."
+    REVISION    "201502060000Z"
+                DESCRIPTION    "Updated description for JVM counters."
+    REVISION    "201501200000Z"
+                DESCRIPTION    "Added counters for SNMP heap, nonheap and garbageCollection Resources."
+    REVISION    "200902030000Z"
+                DESCRIPTION    "Added the Applications table."
+    REVISION    "200805200000Z"
+                DESCRIPTION    "Made the MIB conformant to smilint (level 3)"
+    REVISION    "200606090930Z"
+                DESCRIPTION    "Modified patching tables."
+    REVISION    "200603231935Z"
+                DESCRIPTION    "Added alarm thresholds."
+    REVISION    "200508161000Z"
+                DESCRIPTION    "Added MIB conformance section."
+    REVISION    "200009191431Z"
+                DESCRIPTION    ""
+    ::=  {  enterprises 6431  }
+
+  broadworks OBJECT IDENTIFIER
+    ::=  {  ciscoBroadWorksMIB 1  }
+
+  common OBJECT IDENTIFIER
+    ::=  {  broadworks 1  }
+
+  managedObjects OBJECT IDENTIFIER
+    ::=  {  common 2  }
+
+  thresholds OBJECT IDENTIFIER
+    ::=  {  common 3  }
+
+  alarms OBJECT IDENTIFIER
+    ::=  {  common 4  }
+
+  snmpAgent OBJECT IDENTIFIER
+    ::=  {  common 7  }
+
+  bwRegistration OBJECT IDENTIFIER
+    ::=  {  common 8  }
+
+  reservedModule OBJECT IDENTIFIER
+    ::=  {  common 10  }
+
+-- MIB Compliance - Root
+  bwMtcMibConformance OBJECT IDENTIFIER
+    ::=  {  common 20  }
+
+  moServerModule OBJECT IDENTIFIER
+    ::=  {  managedObjects 1  }
+
+  moSoftwareVersionModule OBJECT IDENTIFIER
+    ::=  {  managedObjects 2  }
+
+  moDeviceModule OBJECT IDENTIFIER
+    ::=  {  managedObjects 3  }
+
+  moApplicationsModule OBJECT IDENTIFIER
+    ::=  {  managedObjects 4  }
+
+  thCounterModule OBJECT IDENTIFIER
+    ::=  {  thresholds 1  }
+
+  thGaugeModule OBJECT IDENTIFIER
+    ::=  {  thresholds 2  }
+
+  thAlarmModule OBJECT IDENTIFIER
+    ::=  {  thresholds 3  }
+
+  processMetrics OBJECT IDENTIFIER
+    ::=  {  snmpAgent 1  }
+
+  kafka OBJECT IDENTIFIER
+    ::=  {  snmpAgent 2  }
+
+  memory OBJECT IDENTIFIER
+    ::=  {  processMetrics 1  }
+
+  heap OBJECT IDENTIFIER
+    ::=  {  memory 1  }
+
+  nonheap OBJECT IDENTIFIER
+    ::=  {  memory 2  }
+
+  garbageCollection OBJECT IDENTIFIER
+    ::=  {  memory 3  }
+
+  kafkaProducerStats OBJECT IDENTIFIER
+    ::=  {  kafka 1  }
+
+  kafkaLoggingStats OBJECT IDENTIFIER
+    ::=  {  kafka 2  }
+
+  bwServer OBJECT IDENTIFIER
+    ::=  {  bwRegistration 1  }
+
+  bwPKI OBJECT IDENTIFIER
+    ::=  {  bwRegistration 2  }
+
+  accessMediationServer OBJECT IDENTIFIER
+    ::=  {  bwServer 1  }
+
+  applicationServer OBJECT IDENTIFIER
+    ::=  {  bwServer 2  }
+
+  callDetailServer OBJECT IDENTIFIER
+    ::=  {  bwServer 3  }
+
+  databaseServer OBJECT IDENTIFIER
+    ::=  {  bwServer 4  }
+
+  elementManagementSystem OBJECT IDENTIFIER
+    ::=  {  bwServer 5  }
+
+  executionServer OBJECT IDENTIFIER
+    ::=  {  bwServer 6  }
+
+  informationTechnology OBJECT IDENTIFIER
+    ::=  {  bwServer 7  }
+
+  mediaServer OBJECT IDENTIFIER
+    ::=  {  bwServer 8  }
+
+  networkDatabaseServer OBJECT IDENTIFIER
+    ::=  {  bwServer 9  }
+
+  networkFunctionManager OBJECT IDENTIFIER
+    ::=  {  bwServer 10  }
+
+  networkServer OBJECT IDENTIFIER
+    ::=  {  bwServer 11  }
+
+  profileServer OBJECT IDENTIFIER
+    ::=  {  bwServer 12  }
+
+  serviceControlFunction OBJECT IDENTIFIER
+    ::=  {  bwServer 13  }
+
+  messagingServer OBJECT IDENTIFIER
+    ::=  {  bwServer 14  }
+
+  sharingServer OBJECT IDENTIFIER
+    ::=  {  bwServer 15  }
+
+  vidoeServer OBJECT IDENTIFIER
+    ::=  {  bwServer 16  }
+
+  virtualizedLicenseServer OBJECT IDENTIFIER
+    ::=  {  bwServer 17  }
+
+  webRTCServer OBJECT IDENTIFIER
+    ::=  {  bwServer 18  }
+
+  xtendedServicesPlatform OBJECT IDENTIFIER
+    ::=  {  bwServer 19  }
+
+  executionServerAmplify OBJECT IDENTIFIER
+    ::=  {  bwServer 20  }
+
+  hazelcastServer OBJECT IDENTIFIER
+    ::=  {  bwServer 21  }
+
+  signalingServiceEdge OBJECT IDENTIFIER
+    ::=  {  bwServer 22  }
+
+  mediaserviceedge OBJECT IDENTIFIER
+    ::=  {  bwServer 24  }
+
+  callrecordingserver OBJECT IDENTIFIER
+    ::=  {  bwServer 26  }
+
+  visualDeviceServer OBJECT IDENTIFIER
+    ::=  {  bwServer 27  }
+
+  applicationDeliveryPlatform OBJECT IDENTIFIER
+    ::=  {  bwServer 29  }
+
+  bwKeyPurpose OBJECT IDENTIFIER
+    ::=  {  bwPKI 1  }
+
+  bwKeyPurposeUserApp OBJECT IDENTIFIER
+    ::=  {  bwKeyPurpose 1  }
+
+  bwKeyPurposeClientApp OBJECT IDENTIFIER
+    ::=  {  bwKeyPurpose 2  }
+
+  bwKeyPurposeTrustedApp OBJECT IDENTIFIER
+    ::=  {  bwKeyPurpose 3  }
+
+-- MIB Compliance - Groups
+  bwMtcMibGroups OBJECT IDENTIFIER
+    ::=  {  bwMtcMibConformance 1  }
+
+-- MIB Compliance - Module
+  bwMtcMibCompliancy OBJECT IDENTIFIER
+    ::=  {  bwMtcMibConformance 2  }
+
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).managedObjects(2).moServerModule(1)
+-- ###################
+
+  bwServerType OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Gives the broadworks server type: { Application Server | Network Server | Media Server | Relay Server }"
+    ::=  {  moServerModule 1  }
+
+  bwRedundancyType OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      nonRedundant (0),
+      primary (1),
+      secondary (2) }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Gives the broadworks server redundancy type: { Primary | Secondary | NotRedundant }"
+    ::=  {  moServerModule 2  }
+
+  bwActiveSoftwareVersion OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Gives the version of the active software version. An operator can change the active software version by setting this field."
+    ::=  {  moServerModule 3  }
+
+  bwAdminState OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      lock (0),
+      unlock (2),
+      forceLock (5) }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "Server admin state. 0- Lock, 2- Unlock, 5- Forced Lock"
+    ::=  {  moServerModule 4  }
+
+  bwOperationalState OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      enabled (0),
+      disabled (1) }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Server operational state. 0- Enabled, 1- Disabled"
+    ::=  {  moServerModule 5  }
+
+  bwResetServer OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      set (0),
+      reset (1),
+      hardReset (2),
+      revertReset (3),
+      hardRevertReset (4) }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "Remotely reset the BroadWorks server. The reset action kicks in when the counter is set to 1."
+    ::=  {  moServerModule 6  }
+
+  bwSubComponentTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF BwSubComponentEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+    "This table exposes some key BroadWorks server sub components. It may or may not be empty depending on the server"
+    ::=  {  moServerModule 7  }
+
+  bwSubComponentEntry OBJECT-TYPE
+    SYNTAX      BwSubComponentEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "This row contains information about a software component in the system"
+    INDEX       { bwSubComponentIndex }
+    ::=  {  bwSubComponentTable 1  }
+
+  BwSubComponentEntry ::= SEQUENCE {
+    bwSubComponentIndex  Unsigned32,
+    bwSubComponentName  DisplayString,
+    bwSubComponentInfo  DisplayString
+  }
+
+  bwSubComponentIndex OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This integer represents the a software component index in the system"
+    ::=  {  bwSubComponentEntry 1  }
+
+  bwSubComponentName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The name of an exposed subcomponent"
+    ::=  {  bwSubComponentEntry 2  }
+
+  bwSubComponentInfo OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Displays status information about the component"
+    ::=  {  bwSubComponentEntry 3  }
+
+  bwTargetSoftwareVersion OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "Gives the target software version. If the server is reset, the active server software version will be updated."
+    ::=  {  moServerModule 8  }
+
+  bwRevertBackupLocation OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "Gives the location of the backup file to use if using the revert option of the reset command."
+    ::=  {  moServerModule 9  }
+
+  bwRestartRequired OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      false (0),
+      true (1) }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This integer gives the restart required status for this server."
+-- @feature:217550
+    ::=  {  moServerModule 10  }
+
+  bwBindStatus OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      notBound (0),
+      bound (1) }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This integer gives the licensing bind status of this server."
+-- @feature:217550
+    ::=  {  moServerModule 11  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).managedObjects(2).moSoftwareVersionModule(2)
+-- ###################
+
+  bwUpdateSoftwareVersionTable OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      idle (0),
+      reload (1) }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This counter is used to reload the installed software table. To do so, just set this register to 1 (reload)"
+    ::=  {  moSoftwareVersionModule 1  }
+
+  bwSoftwareVersionTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF BwSoftwareVersionEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+    "This table has an entry per software version installed on the server"
+    ::=  {  moSoftwareVersionModule 2  }
+
+  bwSoftwareVersionEntry OBJECT-TYPE
+    SYNTAX      BwSoftwareVersionEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "This row contains information on a particular braodworks software version installed on the server"
+    INDEX       { bwSoftwareVersionIndex }
+    ::=  {  bwSoftwareVersionTable 1  }
+
+  BwSoftwareVersionEntry ::= SEQUENCE {
+    bwSoftwareVersionIndex  Unsigned32,
+    bwSoftwareVersionName  DisplayString,
+    bwSoftwareVersionInstallDate  DisplayString,
+    bwSoftwareVersionStatus  INTEGER
+  }
+
+  bwSoftwareVersionIndex OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This integer represents the a group index in the system"
+    ::=  {  bwSoftwareVersionEntry 1  }
+
+  bwSoftwareVersionName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The name of a software load installed on the server."
+    ::=  {  bwSoftwareVersionEntry 2  }
+
+  bwSoftwareVersionInstallDate OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Installation date for this software version."
+    ::=  {  bwSoftwareVersionEntry 3  }
+
+  bwSoftwareVersionStatus OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      installed (0),
+      active (1) }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The status of a software version."
+    ::=  {  bwSoftwareVersionEntry 4  }
+
+  bwSoftwarePatchTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF BwSoftwarePatchEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+    "This table has an entry per service packs installed for each sofware versions"
+    ::=  {  moSoftwareVersionModule 3  }
+
+  bwSoftwarePatchEntry OBJECT-TYPE
+    SYNTAX      BwSoftwarePatchEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "This row contains information on a particular braodworks patch installed on the server"
+    INDEX       { bwSoftwarePatchIndex }
+    ::=  {  bwSoftwarePatchTable 1  }
+
+  BwSoftwarePatchEntry ::= SEQUENCE {
+    bwSoftwarePatchIndex  Unsigned32,
+    bwSoftwarePatchVersionName  DisplayString,
+    bwSoftwarePatchName  DisplayString,
+    bwSoftwarePatchType  DisplayString,
+    bwSoftwarePatchInstallDate  DisplayString,
+    bwSoftwarePatchState  INTEGER,
+    bwSoftwarePatchOperation  INTEGER,
+    bwSoftwarePatchBundle  DisplayString
+  }
+
+  bwSoftwarePatchIndex OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This integer an index of a patch installed in the system"
+    ::=  {  bwSoftwarePatchEntry 1  }
+
+  bwSoftwarePatchVersionName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      obsolete
+    DESCRIPTION
+      "The name of a software load for which this patch applies.
+This field was obsoleted in BroadWorks release 14.0."
+    ::=  {  bwSoftwarePatchEntry 2  }
+
+  bwSoftwarePatchName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Patch name."
+    ::=  {  bwSoftwarePatchEntry 3  }
+
+  bwSoftwarePatchType OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      obsolete
+    DESCRIPTION
+      "Patch type.
+This field was obsoleted in BroadWorks release 14.0."
+    ::=  {  bwSoftwarePatchEntry 4  }
+
+  bwSoftwarePatchInstallDate OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      obsolete
+    DESCRIPTION
+      "This field was obsoleted in BroadWorks release 14.0."
+    ::=  {  bwSoftwarePatchEntry 5  }
+
+  bwSoftwarePatchState OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      installed (0),
+      active (1),
+      installedPendingActive (2),
+      activePendingInstalled (3),
+      deleted (4),
+      installedMissingDependencies (5),
+      missing (6) }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The state of the patch."
+    ::=  {  bwSoftwarePatchEntry 6  }
+
+  bwSoftwarePatchOperation OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      none (0),
+      apply (1),
+      remove (2),
+      delete (3) }
+    MAX-ACCESS  read-write
+    STATUS      obsolete
+    DESCRIPTION
+      "This field was obsoleted in BroadWorks release 14.0."
+    ::=  {  bwSoftwarePatchEntry 7  }
+
+  bwSoftwarePatchBundle OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Patch Bundle name of the patch."
+    ::=  {  bwSoftwarePatchEntry 8  }
+
+  bwSoftwareThirdPartyTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF BwSoftwareThirdPartyEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+    "This table has an entry for third party software version used by the BroadWorks server"
+    ::=  {  moSoftwareVersionModule 4  }
+
+  bwSoftwareThirdPartyEntry OBJECT-TYPE
+    SYNTAX      BwSoftwareThirdPartyEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "This row contains information on an installed 3rd party software version"
+    INDEX       { bwSoftwareThirdPartyIndex }
+    ::=  {  bwSoftwareThirdPartyTable 1  }
+
+  BwSoftwareThirdPartyEntry ::= SEQUENCE {
+    bwSoftwareThirdPartyIndex  Unsigned32,
+    bwSoftwareThirdPartyName  DisplayString,
+    bwSoftwareThirdPartyVersion  DisplayString,
+    bwSoftwareThirdPartyStatus  INTEGER,
+    bwSoftwareThirdPartyUsedBy  DisplayString
+  }
+
+  bwSoftwareThirdPartyIndex OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This integer represents the a group index in the system"
+    ::=  {  bwSoftwareThirdPartyEntry 1  }
+
+  bwSoftwareThirdPartyName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The name of a software load for which this service pack applies"
+    ::=  {  bwSoftwareThirdPartyEntry 2  }
+
+  bwSoftwareThirdPartyVersion OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "A 3rd party software version id"
+    ::=  {  bwSoftwareThirdPartyEntry 3  }
+
+  bwSoftwareThirdPartyStatus OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      installed (0),
+      active (1) }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The status of a 3rd party software version."
+    ::=  {  bwSoftwareThirdPartyEntry 4  }
+
+  bwSoftwareThirdPartyUsedBy OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "A 3rd party software used by list"
+-- @feature:PR-55227
+    ::=  {  bwSoftwareThirdPartyEntry 5  }
+
+  bwSoftwarePatchHistoryTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF BwSoftwarePatchHistoryEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+    "This table contains information about all operation performed on patches."
+    ::=  {  moSoftwareVersionModule 5  }
+
+  bwSoftwarePatchHistoryEntry OBJECT-TYPE
+    SYNTAX      BwSoftwarePatchHistoryEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "Entry of the patch history table containing history of operations applied to patches."
+    INDEX       { bwSoftwarePatchIndex }
+    ::=  {  bwSoftwarePatchHistoryTable 1  }
+
+  BwSoftwarePatchHistoryEntry ::= SEQUENCE {
+    bwSoftwarePatchHistoryIndex  Unsigned32,
+    bwSoftwarePatchHistPatchName  DisplayString,
+    bwSoftwarePatchHistTimeStamp  DisplayString,
+    bwSoftwarePatchHistNewState  INTEGER
+  }
+
+  bwSoftwarePatchHistoryIndex OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This integer an index of a patch operation history."
+    ::=  {  bwSoftwarePatchHistoryEntry 1  }
+
+  bwSoftwarePatchHistPatchName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The name of the patch against which the operation was applied."
+    ::=  {  bwSoftwarePatchHistoryEntry 2  }
+
+  bwSoftwarePatchHistTimeStamp OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The time stamp of the patch operation."
+    ::=  {  bwSoftwarePatchHistoryEntry 3  }
+
+  bwSoftwarePatchHistNewState OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      installed (0),
+      active (1),
+      installedPendingActive (2),
+      activePendingInstalled (3),
+      deleted (4),
+      installedMissingDependencies (5) }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The new state of the patch."
+    ::=  {  bwSoftwarePatchHistoryEntry 4  }
+
+  bwSoftwarePatchImpactedFileTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF BwSoftwarePatchImpactedFileEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+    "This table contains information about files modified by the patches applied on the system."
+    ::=  {  moSoftwareVersionModule 6  }
+
+  bwSoftwarePatchImpactedFileEntry OBJECT-TYPE
+    SYNTAX      BwSoftwarePatchImpactedFileEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "Entry of the patch impacted file table containing information about files modified by patches."
+    INDEX       { bwSoftwarePatchIndex }
+    ::=  {  bwSoftwarePatchImpactedFileTable 1  }
+
+  BwSoftwarePatchImpactedFileEntry ::= SEQUENCE {
+    bwSoftwarePatchImpactedFileIndex  Unsigned32,
+    bwSoftwarePatchImpactedFilePatchName  DisplayString,
+    bwSoftwarePatchImpactedFileFileName  DisplayString
+  }
+
+  bwSoftwarePatchImpactedFileIndex OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This integer an index of an impacted file/patch name."
+    ::=  {  bwSoftwarePatchImpactedFileEntry 1  }
+
+  bwSoftwarePatchImpactedFilePatchName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The name of the patch."
+    ::=  {  bwSoftwarePatchImpactedFileEntry 2  }
+
+  bwSoftwarePatchImpactedFileFileName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The name of an impacted file."
+    ::=  {  bwSoftwarePatchImpactedFileEntry 3  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).managedObjects(2).moDeviceModule(3)
+-- ###################
+
+  bwManagedObjectsTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF BwManagedObjectsEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+    "Table of all sub-managed objects under BroadWorks control"
+    ::=  {  moDeviceModule 1  }
+
+  bwManagedObjectsEntry OBJECT-TYPE
+    SYNTAX      BwManagedObjectsEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "This row contains information on a particular sub-managed object"
+    INDEX       { bwManagedObjectsIndex }
+    ::=  {  bwManagedObjectsTable 1  }
+
+  BwManagedObjectsEntry ::= SEQUENCE {
+    bwManagedObjectsIndex  Unsigned32,
+    bwManagedObjectsName  DisplayString,
+    bwManagedObjectsProtocol  DisplayString,
+    bwManagedObjectsType  DisplayString,
+    bwManagedObjectsAdminState  INTEGER,
+    bwManagedObjectsOperationalState  INTEGER
+  }
+
+  bwManagedObjectsIndex OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This integer represents the a managed object index in the system"
+    ::=  {  bwManagedObjectsEntry 1  }
+
+  bwManagedObjectsName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The name of a managed object controlled by BroadWorks"
+    ::=  {  bwManagedObjectsEntry 2  }
+
+  bwManagedObjectsProtocol OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The protocol supported by a managed object controlled by BroadWorks"
+    ::=  {  bwManagedObjectsEntry 3  }
+
+  bwManagedObjectsType OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The type of a managed object controlled by BroadWorks"
+    ::=  {  bwManagedObjectsEntry 4  }
+
+  bwManagedObjectsAdminState OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      lock (0),
+      locking (1),
+      unlock (2) }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "The administrative state of a managed object controlled by BroadWorks. 0- Lock, 1- locking, 2- Unlock"
+    ::=  {  bwManagedObjectsEntry 5  }
+
+  bwManagedObjectsOperationalState OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      enabled (0),
+      disabled (1) }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The operational state of a managed object controlled by BroadWorks. 0- Enabled, 1- Disabled"
+    ::=  {  bwManagedObjectsEntry 6  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).managedObjects(2).moApplicationsModule(4)
+-- ###################
+
+  bwApplicationsTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF BwApplicationEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+    "Table of all applications under BroadWorks control"
+    ::=  {  moApplicationsModule 1  }
+
+  bwApplicationEntry OBJECT-TYPE
+    SYNTAX      BwApplicationEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "This row contains information on a particular application"
+    INDEX       { bwApplicationIndex }
+    ::=  {  bwApplicationsTable 1  }
+
+  BwApplicationEntry ::= SEQUENCE {
+    bwApplicationIndex  Unsigned32,
+    bwApplicationName  DisplayString,
+    bwApplicationVersion  DisplayString,
+    bwApplicationUpgradeMode  INTEGER,
+    bwApplicationInstallDate  DisplayString,
+    bwApplicationContextPath  DisplayString,
+    bwApplicationStatus  INTEGER,
+    bwApplicationDeployed  INTEGER,
+    bwApplicationAdministrativeState  INTEGER,
+    bwApplicationEffectiveState  INTEGER,
+    bwApplicationDescription  DisplayString
+  }
+
+  bwApplicationIndex OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This integer represents the index of the application in this table."
+    ::=  {  bwApplicationEntry 1  }
+
+  bwApplicationName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The display name of the Application."
+    ::=  {  bwApplicationEntry 2  }
+
+  bwApplicationVersion OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the version of the Application."
+    ::=  {  bwApplicationEntry 3  }
+
+  bwApplicationUpgradeMode OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      manual (0),
+      automatic (1) }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Gets the upgrade mode for this application"
+    ::=  {  bwApplicationEntry 4  }
+
+  bwApplicationInstallDate OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The date at which the application was installed."
+    ::=  {  bwApplicationEntry 5  }
+
+  bwApplicationContextPath OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Gets or sets the configured Context Path of an application hosted in the Web Container."
+    ::=  {  bwApplicationEntry 6  }
+
+  bwApplicationStatus OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      installed (0),
+      active (1) }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Gets the status of the application."
+    ::=  {  bwApplicationEntry 7  }
+
+  bwApplicationDeployed OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      undeployed (0),
+      deployed (1) }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "Gets or sets a flag indicating whether or not this version of the application is deployed."
+    ::=  {  bwApplicationEntry 8  }
+
+  bwApplicationAdministrativeState OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      notAvailable (0),
+      unlock (1),
+      lock (2),
+      forceLock (3) }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "Gets or sets the Administrative State for the application."
+    ::=  {  bwApplicationEntry 9  }
+
+  bwApplicationEffectiveState OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      notAvailable (0),
+      unlocking (1),
+      unlocked (2),
+      locking (3),
+      locked (4),
+      forcedLocking (5),
+      forcedLocked (6),
+      inTrouble (7),
+      stopping (8),
+      stopped (9),
+      dead (10) }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Gets the Effective State for the application."
+    ::=  {  bwApplicationEntry 10  }
+
+  bwApplicationDescription OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Gets the description of the application."
+    ::=  {  bwApplicationEntry 11  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).thresholds(3).thCounterModule(1)
+-- ###################
+
+  bwCounterThresholdTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF BwCounterThresholdEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+    "Table of all the thresholds set against counters in the system"
+    ::=  {  thCounterModule 1  }
+
+  bwCounterThresholdEntry OBJECT-TYPE
+    SYNTAX      BwCounterThresholdEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "This row contains information on a particular counter threshold"
+    INDEX       { bwCounterThresholdIndex }
+    ::=  {  bwCounterThresholdTable 1  }
+
+  BwCounterThresholdEntry ::= SEQUENCE {
+    bwCounterThresholdIndex  Unsigned32,
+    bwCounterThresholdDescription  DisplayString,
+    bwCounterThresholdName  DisplayString,
+    bwCounterThresholdInitialValue  Integer32,
+    bwCounterThresholdOffsetValue  Integer32,
+    bwCounterThresholdCurrentValue  Gauge32,
+    bwCounterThresholdSeverity  INTEGER,
+    bwCounterThresholdControl  INTEGER,
+    bwCounterThresholdCounterName  DisplayString,
+    bwCounterThresholdStringIndex  DisplayString
+  }
+
+  bwCounterThresholdIndex OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This integer represents the index of a counter threshold in the system"
+    ::=  {  bwCounterThresholdEntry 1  }
+
+  bwCounterThresholdDescription OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "A description for this threshold."
+    ::=  {  bwCounterThresholdEntry 2  }
+
+  bwCounterThresholdName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "The name of the threshold. Setting this parameter using an unused index creates a row with the specified index and thresholdName. Setting it with an already used index has no effect."
+    ::=  {  bwCounterThresholdEntry 3  }
+
+  bwCounterThresholdInitialValue OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "The initial counter threshold value"
+    ::=  {  bwCounterThresholdEntry 4  }
+
+  bwCounterThresholdOffsetValue OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "The offset to be added to the current threshold value once an alarm has been sent."
+    ::=  {  bwCounterThresholdEntry 5  }
+
+  bwCounterThresholdCurrentValue OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      obsolete
+    DESCRIPTION
+      "The threshold value at which the next alarm will be generated"
+    ::=  {  bwCounterThresholdEntry 6  }
+
+  bwCounterThresholdSeverity OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      informational (0),
+      low (1),
+      medium (2),
+      high (3),
+      critical (4) }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "The severity of the alarm to be sent"
+    ::=  {  bwCounterThresholdEntry 7  }
+
+  bwCounterThresholdControl OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      disabled (0),
+      enabled (1),
+      delete (2) }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This scalar controls the life cycle of the threshold. Setting this counter to delete(2) removes the entry."
+    ::=  {  bwCounterThresholdEntry 8  }
+
+  bwCounterThresholdCounterName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "The name of a counter."
+-- @feature:PR-46832
+    ::=  {  bwCounterThresholdEntry 9  }
+
+  bwCounterThresholdStringIndex OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "The stringIndex of the counter in the counterTable. (Necessary if the CounterName is a counterTable name)."
+-- @feature:PR-46832
+    ::=  {  bwCounterThresholdEntry 10  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).thresholds(3).thGaugeModule(2)
+-- ###################
+
+  bwGaugeThresholdTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF BwGaugeThresholdEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+    "Table of all the thresholds set against gauges in the system"
+    ::=  {  thGaugeModule 1  }
+
+  bwGaugeThresholdEntry OBJECT-TYPE
+    SYNTAX      BwGaugeThresholdEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "This row contains information on a particular gauge threshold"
+    INDEX       { bwGaugeThresholdIndex }
+    ::=  {  bwGaugeThresholdTable 1  }
+
+  BwGaugeThresholdEntry ::= SEQUENCE {
+    bwGaugeThresholdIndex  Unsigned32,
+    bwGaugeThresholdDescription  DisplayString,
+    bwGaugeThresholdName  DisplayString,
+    bwGaugeThresholdNotifyLow  Integer32,
+    bwGaugeThresholdNotifyHigh  Integer32,
+    bwGaugeThresholdSeverity  INTEGER,
+    bwGaugeThresholdControl  INTEGER,
+    bwGaugeThresholdGaugeName  DisplayString,
+    bwGaugeThresholdStringIndex  DisplayString,
+    bwGaugeThresholdRaiseLow  Integer32,
+    bwGaugeThresholdClearLow  Integer32,
+    bwGaugeThresholdRaiseHigh  Integer32,
+    bwGaugeThresholdClearHigh  Integer32
+  }
+
+  bwGaugeThresholdIndex OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This integer represents the index of a gauge threshold in the system"
+    ::=  {  bwGaugeThresholdEntry 1  }
+
+  bwGaugeThresholdDescription OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "A description for this threshold."
+    ::=  {  bwGaugeThresholdEntry 2  }
+
+  bwGaugeThresholdName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "The name of the threshold. Setting this parameter using an unused index creates a row with the specified index and thresholdName. Setting it with an already used index has no effect."
+    ::=  {  bwGaugeThresholdEntry 3  }
+
+  bwGaugeThresholdNotifyLow OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      obsolete
+    DESCRIPTION
+      "The gauge value at which an alarm will be generated when the gauge value reaches or crosses the NotifyHigh level in a rising direction.  Subsequent similar crossings of the NotifyHigh level will not generate an alarm until the gauge has reached or crossed the corresponding NotifyLow level."
+    ::=  {  bwGaugeThresholdEntry 4  }
+
+  bwGaugeThresholdNotifyHigh OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      obsolete
+    DESCRIPTION
+      "The gauge value at which an alarm will be generated when the gauge value reaches or crosses the NotifyLow level in a falling direction.  Subsequent similar crossings of the NotifyLow level will not generate an alarm until the gauge has reached or crossed the corresponding NotifyHigh level."
+    ::=  {  bwGaugeThresholdEntry 5  }
+
+  bwGaugeThresholdSeverity OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      informational (0),
+      low (1),
+      medium (2),
+      high (3),
+      critical (4) }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "The severity of the alarm to be sent"
+    ::=  {  bwGaugeThresholdEntry 6  }
+
+  bwGaugeThresholdControl OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      disabled (0),
+      enabled (1),
+      delete (2) }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This scalar controls the life cycle of the threshold. Setting this gauge to delete(2) removes the entry."
+    ::=  {  bwGaugeThresholdEntry 7  }
+
+  bwGaugeThresholdGaugeName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "The name of a gauge."
+-- @feature:PR-46832
+    ::=  {  bwGaugeThresholdEntry 8  }
+
+  bwGaugeThresholdStringIndex OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "The stringIndex of the gauge in the gaugeTable. (Necessary if the GaugeName is a gaugeTable name)."
+-- @feature:PR-46832
+    ::=  {  bwGaugeThresholdEntry 9  }
+
+  bwGaugeThresholdRaiseLow OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "The gauge value at which an alarm will be generated when the gauge value reaches or crosses the raiseLow level in a falling direction. Setting this value to '-1' clears the value and sets it to 'nil'."
+-- @feature:PR-46832
+    ::=  {  bwGaugeThresholdEntry 10  }
+
+  bwGaugeThresholdClearLow OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "The gauge value at which a low alarm will be cleared when the gauge value reaches or crosses the clearLow level in a rising direction. Setting this value to '-1' clears the value and sets it to 'nil'."
+-- @feature:PR-46832
+    ::=  {  bwGaugeThresholdEntry 11  }
+
+  bwGaugeThresholdRaiseHigh OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "The gauge value at which an alarm will be generated when the gauge value reaches or crosses the raiseHigh level in a rising direction. Setting this value to '-1' clears the value and sets it to 'nil'."
+-- @feature:PR-46832
+    ::=  {  bwGaugeThresholdEntry 12  }
+
+  bwGaugeThresholdClearHigh OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "The gauge value at which a high alarm will be cleared when the gauge value reaches or crosses the clearHigh level in a falling direction. Setting this value to '-1' clears the value and sets it to 'nil'."
+-- @feature:PR-46832
+    ::=  {  bwGaugeThresholdEntry 13  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).thresholds(3).thAlarmModule(3)
+-- ###################
+
+  bwAlarmThresholdTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF BwAlarmThresholdEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+    "Table of all the thresholds set against alarms in the system"
+    ::=  {  thAlarmModule 1  }
+
+  bwAlarmThresholdEntry OBJECT-TYPE
+    SYNTAX      BwAlarmThresholdEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "This row contains information on a particular alarm threshold"
+    INDEX       { bwAlarmThresholdIndex }
+    ::=  {  bwAlarmThresholdTable 1  }
+
+  BwAlarmThresholdEntry ::= SEQUENCE {
+    bwAlarmThresholdIndex  Unsigned32,
+    bwAlarmThresholdName  DisplayString,
+    bwAlarmThresholdMaxNumTrapsPerTimePeriod  Integer32,
+    bwAlarmThresholdTimePeriodInSeconds  Integer32,
+    bwAlarmThresholdProblemTextVarNum1  Integer32,
+    bwAlarmThresholdProblemTextVarNum2  Integer32,
+    bwAlarmThresholdProblemTextVarNum3  Integer32,
+    bwAlarmThresholdProblemTextVarNum4  Integer32,
+    bwAlarmThresholdProblemTextVarNum5  Integer32,
+    bwAlarmThresholdMinimumSeverity  INTEGER,
+    bwAlarmThresholdControl  INTEGER
+  }
+
+  bwAlarmThresholdIndex OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This integer represents the index of an alarm threshold in the system"
+    ::=  {  bwAlarmThresholdEntry 1  }
+
+  bwAlarmThresholdName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "The name of an alarm or DEFAULT if the threshold applies to all alarms in the system"
+    ::=  {  bwAlarmThresholdEntry 2  }
+
+  bwAlarmThresholdMaxNumTrapsPerTimePeriod OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "The maximum number of traps that the system outputs per sliding time period. If set to 0 (zero), the alarm is suppressed and the system does not output any trap for this alarm filter."
+    ::=  {  bwAlarmThresholdEntry 3  }
+
+  bwAlarmThresholdTimePeriodInSeconds OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "The time period used for threshold calculation, in seconds."
+    ::=  {  bwAlarmThresholdEntry 4  }
+
+  bwAlarmThresholdProblemTextVarNum1 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "To further refine a threshold, specify the position number of the variable data within the alarm problem text (1, 2, 3, etc.) that together with the alarm name, define the actual threshold. For example, if the alarm has five problem text variables: 1-deviceName, 2-deviceAddress, 3-devicePort, 4-errorType, 5-errorCode, and if the alarm threshold is to limit the number of traps for a given deviceName, devicePort, and errorType, then bwAlarmThresholdProblemTextVarNum1 should be set to 1, bwAlarmThresholdProblemTextVarNum2 should be set to 3, and bwAlarmThresholdProblemTextVarNum3 should be set to 4. To ignore filtering based on problem text variables, set to 0 (zero)."
+    ::=  {  bwAlarmThresholdEntry 5  }
+
+  bwAlarmThresholdProblemTextVarNum2 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "To further refine a threshold, specify the position number of the variable data within the alarm problem text (1, 2, 3, etc.) that together with the alarm name, define the actual threshold. For example, if the alarm has five problem text variables: 1-deviceName, 2-deviceAddress, 3-devicePort, 4-errorType, 5-errorCode, and if the alarm threshold is to limit the number of traps for a given deviceName, devicePort, and errorType, then bwAlarmThresholdProblemTextVarNum1 should be set to 1, bwAlarmThresholdProblemTextVarNum2 should be set to 3, and bwAlarmThresholdProblemTextVarNum3 should be set to 4. To ignore filtering based on problem text variables, set to 0 (zero)."
+    ::=  {  bwAlarmThresholdEntry 6  }
+
+  bwAlarmThresholdProblemTextVarNum3 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "To further refine a threshold, specify the position number of the variable data within the alarm problem text (1, 2, 3, etc.) that together with the alarm name, define the actual threshold. For example, if the alarm has five problem text variables: 1-deviceName, 2-deviceAddress, 3-devicePort, 4-errorType, 5-errorCode, and if the alarm threshold is to limit the number of traps for a given deviceName, devicePort, and errorType, then bwAlarmThresholdProblemTextVarNum1 should be set to 1, bwAlarmThresholdProblemTextVarNum2 should be set to 3, and bwAlarmThresholdProblemTextVarNum3 should be set to 4. To ignore filtering based on problem text variables, set to 0 (zero)."
+    ::=  {  bwAlarmThresholdEntry 7  }
+
+  bwAlarmThresholdProblemTextVarNum4 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "To further refine a threshold, specify the position number of the variable data within the alarm problem text (1, 2, 3, etc.) that together with the alarm name, define the actual threshold. For example, if the alarm has five problem text variables: 1-deviceName, 2-deviceAddress, 3-devicePort, 4-errorType, 5-errorCode, and if the alarm threshold is to limit the number of traps for a given deviceName, devicePort, and errorType, then bwAlarmThresholdProblemTextVarNum1 should be set to 1, bwAlarmThresholdProblemTextVarNum2 should be set to 3, and bwAlarmThresholdProblemTextVarNum3 should be set to 4. To ignore filtering based on problem text variables, set to 0 (zero)."
+    ::=  {  bwAlarmThresholdEntry 8  }
+
+  bwAlarmThresholdProblemTextVarNum5 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "To further refine a threshold, specify the position number of the variable data within the alarm problem text (1, 2, 3, etc.) that together with the alarm name, define the actual threshold. For example, if the alarm has five problem text variables: 1-deviceName, 2-deviceAddress, 3-devicePort, 4-errorType, 5-errorCode, and if the alarm threshold is to limit the number of traps for a given deviceName, devicePort, and errorType, then bwAlarmThresholdProblemTextVarNum1 should be set to 1, bwAlarmThresholdProblemTextVarNum2 should be set to 3, and bwAlarmThresholdProblemTextVarNum3 should be set to 4. To ignore filtering based on problem text variables, set to 0 (zero)."
+    ::=  {  bwAlarmThresholdEntry 9  }
+
+  bwAlarmThresholdMinimumSeverity OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      informational (0),
+      low (1),
+      medium (2),
+      high (3),
+      critical (4) }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This is the minimum alarm severity under which alarms start to be discarded."
+    ::=  {  bwAlarmThresholdEntry 10  }
+
+  bwAlarmThresholdControl OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      inactive (0),
+      active (1),
+      delete (2),
+      create (3),
+      invalid (4) }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This scalar controls the life cycle of the threshold. Setting this threshold to create(3) using an unused index creates a row with the specified index. Setting it with an already used index has no effect. Setting this threshold to delete(2) removes the entry."
+    ::=  {  bwAlarmThresholdEntry 11  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).alarms(4)
+-- ###################
+
+  bwAlarmsTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF BwAlarmsEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+    "This table exposes all currently active alarms on the BroadWorks server."
+    ::=  {  alarms 1  }
+
+  bwAlarmsEntry OBJECT-TYPE
+    SYNTAX      BwAlarmsEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "This row contains information on a particular active alarm."
+    INDEX       { aeIdentifier }
+    ::=  {  bwAlarmsTable 1  }
+
+  BwAlarmsEntry ::= SEQUENCE {
+    aeIdentifier  Unsigned32,
+    aeTimeStamp  DateAndTime,
+    aeAlarmName  DisplayString,
+    aeSeverity  INTEGER,
+    aeCorrelationParameter  DisplayString,
+    aeClearAlarm  INTEGER,
+    aeResend  DisplayString
+  }
+
+  aeIdentifier OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The sequential identifier of the Alarm."
+    ::=  {  bwAlarmsEntry 1  }
+
+  aeTimeStamp OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The time at which the Alarm was sent."
+    ::=  {  bwAlarmsEntry 2  }
+
+  aeAlarmName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The name of the alarm that occurred."
+    ::=  {  bwAlarmsEntry 3  }
+
+  aeSeverity OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      informational (0),
+      low (1),
+      medium (2),
+      high (3),
+      critical (4) }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "An indicator of the severity of the fault.
+informational:  Not service affecting
+low: Losing redundant connectivity, but not service or capacity affecting.
+medium: ability to provide connectivity, but service level affecting.
+high: Inability to provide connectivity over a particular interface.
+critical: No basic calls can be processed without operator intervention."
+    ::=  {  bwAlarmsEntry 4  }
+
+  aeCorrelationParameter OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The correlation parameter that uniquely identifies an alarm occurrence."
+    ::=  {  bwAlarmsEntry 5  }
+
+  aeClearAlarm OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      void (0),
+      clear (1) }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "Setting this field to 1 results in a request to the originating component to clear the alarm. Setting to 0 has no effect."
+    ::=  {  bwAlarmsEntry 6  }
+
+  aeResend OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "To resend an alarm, set this field to a valid Address:Port value (must be a configured Trap receiver)."
+    ::=  {  bwAlarmsEntry 7  }
+
+  resetAlarmsTable OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      set (0),
+      reset (1) }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "To remotely clear all alarms in the alarms table. The table is resetted when this counter is set to 1."
+    ::=  {  alarms 2  }
+
+  resendAlarmsTable OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "To resend every single alarm currently in the alarms table to a configured monitoring manager."
+    ::=  {  alarms 3  }
+
+  lastAlarmsTableModificationTimestamp OBJECT-TYPE
+    SYNTAX      TimeStamp
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp of the latest modification to the alarms table."
+    ::=  {  alarms 4  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).snmpAgent(7).processMetrics(1).memory(1).heap(1)
+-- ###################
+
+  bwSNMPProcessMetricsHeapInitSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the initial amount of memory that is allocated upon process startup (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  heap 1  }
+
+  bwSNMPProcessMetricsHeapMaxSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the maximum amount of memory that is allocated during the process life (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  heap 2  }
+
+  bwSNMPProcessMetricsHeapUsed OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the amount of memory currently in use (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  heap 3  }
+
+  bwSNMPProcessMetricsHeapUsedMax OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the maximum amount of memory that has been used since the process started (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  heap 4  }
+
+  bwSNMPProcessMetricsHeapCommitted OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the amount of memory currently committed by the process (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  heap 5  }
+
+  bwSNMPProcessMetricsHeapLastPostCollectionSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the size of the heap after a major garbage collection (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  heap 6  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).snmpAgent(7).processMetrics(1).memory(1).nonheap(2)
+-- ###################
+
+  bwSNMPProcessMetricsNonHeapInitSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the initial amount of memory that is allocated upon process startup (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  nonheap 1  }
+
+  bwSNMPProcessMetricsNonHeapMaxSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the maximum amount of memory that is allocated during the process life (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  nonheap 2  }
+
+  bwSNMPProcessMetricsNonHeapUsed OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the amount of memory currently in use (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  nonheap 3  }
+
+  bwSNMPProcessMetricsNonHeapUsedMax OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the maximum amount of memory that has been used since the process started (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  nonheap 4  }
+
+  bwSNMPProcessMetricsNonHeapCommitted OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the amount of memory currently committed by the process (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  nonheap 5  }
+
+  bwSNMPProcessMetricsNonHeapLastPostCollectionSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the size of the non-heap after a major garbage collection (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  nonheap 6  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).snmpAgent(7).processMetrics(1).memory(1).garbageCollection(3)
+-- ###################
+
+  bwSNMPProcessMetricsGCMinorCollectionsCount OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The number of minor collections."
+-- @feature:BW-6517
+    ::=  {  garbageCollection 1  }
+
+  bwSNMPProcessMetricsGCMajorCollectionsCount OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The number of major collections."
+-- @feature:BW-6517
+    ::=  {  garbageCollection 2  }
+
+  bwSNMPProcessMetricsGCMinorCollectionTimestamp OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the time stamp indicating when the last minor collection occurred."
+-- @feature:BW-6517
+    ::=  {  garbageCollection 3  }
+
+  bwSNMPProcessMetricsGCMajorCollectionTimestamp OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the time stamp indicating when the last major collection occurred."
+-- @feature:BW-6517
+    ::=  {  garbageCollection 4  }
+
+  bwSNMPProcessMetricsGCMinorCollectionAvg OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the average amount of memory claimed during minor collections (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  garbageCollection 5  }
+
+  bwSNMPProcessMetricsGCMajorCollectionAvg OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the average amount of memory claimed during major collections (in mega bytes)."
+-- @feature:BW-6517
+    ::=  {  garbageCollection 6  }
+
+  bwSNMPProcessMetricsGCMajColResetTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp of the last completed sampling period."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 7  }
+
+  bwSNMPProcessMetricsGCMajColAvgCurrInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of bwSNMPProcessMetricsGCMajorCollectionAvg in the current interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 8  }
+
+  bwSNMPProcessMetricsGCMajColAvgLastInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of bwSNMPProcessMetricsGCMajorCollectionAvg in the last interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 9  }
+
+  bwSNMPProcessMetricsGCMinColResetTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp of the last completed sampling period."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 10  }
+
+  bwSNMPProcessMetricsGCMinColAvgCurrInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of bwSNMPProcessMetricsGCMinorCollectionAvg in the current interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 11  }
+
+  bwSNMPProcessMetricsGCMinColAvgLastInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of bwSNMPProcessMetricsGCMinorCollectionAvg in the last interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 12  }
+
+  bwSNMPProcessMetricsGCMinColTimeBetweenAvg OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the average amount of time between minor garbage collections (in milliseconds)."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 13  }
+
+  bwSNMPProcessMetricsGCMajColTimeBetweenAvg OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the average amount of time between major garbage collections (in milliseconds)."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 14  }
+
+  bwSNMPProcessMetricsGCPauseTimeAvg OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the average amount of pause time for garbage collections (in milliseconds)."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 15  }
+
+  bwSNMPProcessMetricsGCPauseTimeMax OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is the max amount of pause time for garbage collections (in milliseconds)."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 16  }
+
+  bwSNMPProcessMetricsGCPauseTimeMaxTimestamp OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp for the maximum pause time occurence."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 17  }
+
+  bwSNMPProcessMetricsGCMinColTimeBetweenResetTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp of the last completed sampling period."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 18  }
+
+  bwSNMPProcessMetricsGCMinColTimeBetweenAvgCurrInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of the average amount of time between minor garbage collections in the current interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 19  }
+
+  bwSNMPProcessMetricsGCMinColTimeBetweenAvgLastInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of the average amount of time between minor garbage collections in the last interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 20  }
+
+  bwSNMPProcessMetricsGCMajColTimeBetweenResetTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp of the last completed sampling period."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 21  }
+
+  bwSNMPProcessMetricsGCMajColTimeBetweenAvgCurrInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of the average amount of time between major garbage collections in the current interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 22  }
+
+  bwSNMPProcessMetricsGCMajColTimeBetweenAvgLastInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of the average amount of time between major garbage collections in the last interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 23  }
+
+  bwSNMPProcessMetricsGCPauseTimeResetTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp of the last completed sampling period."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 24  }
+
+  bwSNMPProcessMetricsGCPauseTimeAvgCurrInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of the average amount of pause time for garbage collections in the current interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 25  }
+
+  bwSNMPProcessMetricsGCPauseTimeAvgLastInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of the average amount of pause time for garbage collections in the last interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 26  }
+
+  bwSNMPProcessMetricsGCPauseTimeMaxCurrInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of the max amount of pause time for garbage collections in the current interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 27  }
+
+  bwSNMPProcessMetricsGCPauseTimeMaxLastInt OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The value of the max amount of pause time for garbage collections in the last interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 28  }
+
+  bwSNMPProcessMetricsGCPauseTimeMaxCurrIntTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp for the maximum pause time occurence of the current interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 29  }
+
+  bwSNMPProcessMetricsGCPauseTimeMaxLastIntTS OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The timestamp for the maximum pause time occurence of the last interval."
+-- @feature:BW-20387
+    ::=  {  garbageCollection 30  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).snmpAgent(7).kafka(2).kafkaProducerStats(1)
+-- ###################
+
+  bwSNMPKafkaProducerTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF BwSNMPKafkaProducerEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+    "This table contains counters for the Kafka Producers."
+-- @feature:BWKS-917
+    ::=  {  kafkaProducerStats 1  }
+
+  bwSNMPKafkaProducerEntry OBJECT-TYPE
+    SYNTAX      BwSNMPKafkaProducerEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "Definition of the entries for bwSNMPKafkaProducerTable."
+    INDEX       { bwSNMPKafkaProducerIndex }
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerTable 1  }
+
+  BwSNMPKafkaProducerEntry ::= SEQUENCE {
+    bwSNMPKafkaProducerIndex  Unsigned32,
+    bwSNMPKafkaProducerName  DisplayString,
+    bwSNMPKafkaProducerBatchSizeAvg  Gauge32,
+    bwSNMPKafkaProducerBatchSizeMax  Gauge32,
+    bwSNMPKafkaProducerBufferAvailableBytes  Gauge32,
+    bwSNMPKafkaProducerBufferTotalBytes  Gauge32,
+    bwSNMPKafkaProducerBufferpoolWaitTime  Gauge32,
+    bwSNMPKafkaProducerConnectionCount  Gauge32,
+    bwSNMPKafkaProducerRecordErrorRate  Gauge32,
+    bwSNMPKafkaProducerRecordSendRate  Gauge32,
+    bwSNMPKafkaProducerRecordErrorTotal  Counter32,
+    bwSNMPKafkaProducerRecordSendTotal  Counter32,
+    bwSNMPKafkaProducerRecordRetryRate  Gauge32,
+    bwSNMPKafkaProducerRecordRetryTotal  Counter32,
+    bwSNMPKafkaProducerRecordQueueTimeAvg  Gauge32,
+    bwSNMPKafkaProducerRecordQueueTimeMax  Gauge32,
+    bwSNMPKafkaProducerRecordsPerRequestAvg  Gauge32,
+    bwSNMPKafkaProducerRequestsInFlight  Gauge32,
+    bwSNMPKafkaProducerRequestLatencyAvg  Gauge32,
+    bwSNMPKafkaProducerRequestLatencyMax  Gauge32,
+    bwSNMPKafkaProducerWaitingThreads  Gauge32,
+    bwSNMPKafkaProducerCompressionRateAvg  Gauge32,
+    bwSNMPKafkaProducerApplicationDroppedTotal  Counter32,
+    bwSNMPKafkaProducerApplicationQueueSize  Gauge32
+  }
+
+  bwSNMPKafkaProducerIndex OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This integer represents an index in table bwSNMPKafkaProducerTable. This is the index to a specific Kafka Producer name."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 1  }
+
+  bwSNMPKafkaProducerName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The name of the Kafka Producer - Names are internally defined at the application level."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 2  }
+
+  bwSNMPKafkaProducerBatchSizeAvg OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the average number of bytes sent in a request, in batch mode, to the brokers."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 3  }
+
+  bwSNMPKafkaProducerBatchSizeMax OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the max number of bytes sent in a request, in batch mode, to the brokers."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 4  }
+
+  bwSNMPKafkaProducerBufferAvailableBytes OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the total amount of buffer memory available for use by the producer."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 5  }
+
+  bwSNMPKafkaProducerBufferTotalBytes OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the maximum number of bytes in memory the producer can use for buffering events (it does not depict the actual memory in use)."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 6  }
+
+  bwSNMPKafkaProducerBufferpoolWaitTime OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the fraction of time the producer waits for space to be allocated within the buffer pool."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 7  }
+
+  bwSNMPKafkaProducerConnectionCount OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the current number of active connections between the producer and the brokers."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 8  }
+
+  bwSNMPKafkaProducerRecordErrorRate OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the average number of records (per second) sent by the producer to the brokers, that resulted in errors."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 9  }
+
+  bwSNMPKafkaProducerRecordSendRate OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the average number of records (per second) sent by the producer to the brokers."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 10  }
+
+  bwSNMPKafkaProducerRecordErrorTotal OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This counter tracks the total number of records sent by the producer to the brokers that resulted in errors."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 11  }
+
+  bwSNMPKafkaProducerRecordSendTotal OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This counter tracks the total number of records sent by the producer to the brokers."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 12  }
+
+  bwSNMPKafkaProducerRecordRetryRate OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the average number of retried records (per second) sent by the producer to the brokers."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 13  }
+
+  bwSNMPKafkaProducerRecordRetryTotal OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+      "This counter tracks the total number of retried records sent by the producer to the brokers."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 14  }
+
+  bwSNMPKafkaProducerRecordQueueTimeAvg OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the average time (in milliseconds) records spend in the send buffer, in batch mode, before the producer actually sends them to the brokers."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 15  }
+
+  bwSNMPKafkaProducerRecordQueueTimeMax OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the maximum time (in milliseconds) records spend in the send buffer, in batch mode, before the producer actually sends them to the brokers."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 16  }
+
+  bwSNMPKafkaProducerRecordsPerRequestAvg OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the average number of records sent per request, in batch mode, to the brokers."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 17  }
+
+  bwSNMPKafkaProducerRequestsInFlight OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the current number of in-flight requests the producer has sent to the brokers, and is awaiting a response."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 18  }
+
+  bwSNMPKafkaProducerRequestLatencyAvg OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the average request latency (in milliseconds) for requests sent from the producer to the brokers."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 19  }
+
+  bwSNMPKafkaProducerRequestLatencyMax OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the maximum request latency (in milliseconds) for requests sent from the producer to the brokers."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 20  }
+
+  bwSNMPKafkaProducerWaitingThreads OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the number of producer threads that are blocked waiting for buffer memory, to enqueue their records."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 21  }
+
+  bwSNMPKafkaProducerCompressionRateAvg OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the average compression rate of record batches, defined as the average ratio of the compressed batch size over the uncompressed size. The value is in percentage."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 22  }
+
+  bwSNMPKafkaProducerApplicationDroppedTotal OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-only
+    STATUS      obsolete
+    DESCRIPTION
+      "This gauge tracks the number of records dropped by the application before reaching the producer."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 23  }
+
+  bwSNMPKafkaProducerApplicationQueueSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      obsolete
+    DESCRIPTION
+      "This gauge tracks the size of the Kafka output channel queue."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaProducerEntry 24  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).snmpAgent(7).kafka(2).kafkaLoggingStats(2)
+-- ###################
+
+  bwSNMPKafkaLoggingTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF BwSNMPKafkaLoggingEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+    "This table contains counters for the Kafka output channels."
+-- @feature:BWKS-917
+    ::=  {  kafkaLoggingStats 2  }
+
+  bwSNMPKafkaLoggingEntry OBJECT-TYPE
+    SYNTAX      BwSNMPKafkaLoggingEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "Definition of the entries for bwSNMPKafkaLoggingTable."
+    INDEX       { bwSNMPKafkaLoggingIndex }
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaLoggingTable 1  }
+
+  BwSNMPKafkaLoggingEntry ::= SEQUENCE {
+    bwSNMPKafkaLoggingIndex  Unsigned32,
+    bwSNMPKafkaLoggingSubsystemName  DisplayString,
+    bwSNMPKafkaLoggingApplicationDroppedTotal  Counter32,
+    bwSNMPKafkaLoggingApplicationQueueSize  Gauge32,
+    bwSNMPKafkaLoggingApplicationQueueCapacity  Gauge32
+  }
+
+  bwSNMPKafkaLoggingIndex OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This integer represents an index in table bwSNMPKafkaLoggingTable. This is the index to a specific logging subsystem."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaLoggingEntry 1  }
+
+  bwSNMPKafkaLoggingSubsystemName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The name of the logging subsystem that is using Kafka for logging."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaLoggingEntry 2  }
+
+  bwSNMPKafkaLoggingApplicationDroppedTotal OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the number of records dropped by the application before reaching the producer."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaLoggingEntry 3  }
+
+  bwSNMPKafkaLoggingApplicationQueueSize OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the size of the Kafka output channel queue."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaLoggingEntry 4  }
+
+  bwSNMPKafkaLoggingApplicationQueueCapacity OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This gauge tracks the capacity of the Kafka output channel queue."
+-- @feature:BWKS-917
+    ::=  {  bwSNMPKafkaLoggingEntry 5  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).reservedModule(10)
+-- ###################
+
+  bwReservedScalar OBJECT-TYPE
+    SYNTAX      INTEGER { 
+      notUsed (0) }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "This is a reserved counter"
+    ::=  {  reservedModule 1  }
+
+-- BroadWorks MIB Conformance Definition  ...........................................
+
+  broadworksmaintenanceMoServerModuleGrp OBJECT-GROUP
+    OBJECTS { bwServerType, bwRedundancyType, bwActiveSoftwareVersion, bwAdminState, bwOperationalState, bwResetServer, bwSubComponentIndex, bwSubComponentName, bwSubComponentInfo, bwTargetSoftwareVersion, bwRevertBackupLocation, bwRestartRequired, bwBindStatus }
+    STATUS  current
+    DESCRIPTION "This group defines the statistics for common managedObjects moServerModule."
+    ::=  {  bwMtcMibGroups 1  }
+
+  broadworksmaintenanceMoSoftwareVersionModuleGrp OBJECT-GROUP
+    OBJECTS { bwUpdateSoftwareVersionTable, bwSoftwareVersionIndex, bwSoftwareVersionName, bwSoftwareVersionInstallDate, bwSoftwareVersionStatus, bwSoftwarePatchIndex, bwSoftwarePatchVersionName, bwSoftwarePatchName, bwSoftwarePatchType, bwSoftwarePatchInstallDate, bwSoftwarePatchState, bwSoftwarePatchOperation, bwSoftwarePatchBundle, bwSoftwareThirdPartyIndex, bwSoftwareThirdPartyName, bwSoftwareThirdPartyVersion, bwSoftwareThirdPartyStatus, bwSoftwareThirdPartyUsedBy, bwSoftwarePatchHistoryIndex, bwSoftwarePatchHistPatchName, bwSoftwarePatchHistTimeStamp, bwSoftwarePatchHistNewState, bwSoftwarePatchImpactedFileIndex, bwSoftwarePatchImpactedFilePatchName, bwSoftwarePatchImpactedFileFileName }
+    STATUS  current
+    DESCRIPTION "This group defines the statistics for common managedObjects moSoftwareVersionModule."
+    ::=  {  bwMtcMibGroups 2  }
+
+  broadworksmaintenanceMoDeviceModuleGrp OBJECT-GROUP
+    OBJECTS { bwManagedObjectsIndex, bwManagedObjectsName, bwManagedObjectsProtocol, bwManagedObjectsType, bwManagedObjectsAdminState, bwManagedObjectsOperationalState }
+    STATUS  current
+    DESCRIPTION "This group defines the statistics for common managedObjects moDeviceModule."
+    ::=  {  bwMtcMibGroups 3  }
+
+  broadworksmaintenanceMoApplicationsModuleGrp OBJECT-GROUP
+    OBJECTS { bwApplicationIndex, bwApplicationName, bwApplicationVersion, bwApplicationUpgradeMode, bwApplicationInstallDate, bwApplicationContextPath, bwApplicationStatus, bwApplicationDeployed, bwApplicationAdministrativeState, bwApplicationEffectiveState, bwApplicationDescription }
+    STATUS  current
+    DESCRIPTION "This group defines the statistics for common managedObjects moApplicationsModule."
+    ::=  {  bwMtcMibGroups 4  }
+
+  broadworksmaintenanceThCounterModuleGrp OBJECT-GROUP
+    OBJECTS { bwCounterThresholdIndex, bwCounterThresholdDescription, bwCounterThresholdName, bwCounterThresholdInitialValue, bwCounterThresholdOffsetValue, bwCounterThresholdCurrentValue, bwCounterThresholdSeverity, bwCounterThresholdControl, bwCounterThresholdCounterName, bwCounterThresholdStringIndex }
+    STATUS  current
+    DESCRIPTION "This group defines the statistics for common thresholds thCounterModule."
+    ::=  {  bwMtcMibGroups 5  }
+
+  broadworksmaintenanceThGaugeModuleGrp OBJECT-GROUP
+    OBJECTS { bwGaugeThresholdIndex, bwGaugeThresholdDescription, bwGaugeThresholdName, bwGaugeThresholdNotifyLow, bwGaugeThresholdNotifyHigh, bwGaugeThresholdSeverity, bwGaugeThresholdControl, bwGaugeThresholdGaugeName, bwGaugeThresholdStringIndex, bwGaugeThresholdRaiseLow, bwGaugeThresholdClearLow, bwGaugeThresholdRaiseHigh, bwGaugeThresholdClearHigh }
+    STATUS  current
+    DESCRIPTION "This group defines the statistics for common thresholds thGaugeModule."
+    ::=  {  bwMtcMibGroups 6  }
+
+  broadworksmaintenanceThAlarmModuleGrp OBJECT-GROUP
+    OBJECTS { bwAlarmThresholdIndex, bwAlarmThresholdName, bwAlarmThresholdMaxNumTrapsPerTimePeriod, bwAlarmThresholdTimePeriodInSeconds, bwAlarmThresholdProblemTextVarNum1, bwAlarmThresholdProblemTextVarNum2, bwAlarmThresholdProblemTextVarNum3, bwAlarmThresholdProblemTextVarNum4, bwAlarmThresholdProblemTextVarNum5, bwAlarmThresholdMinimumSeverity, bwAlarmThresholdControl }
+    STATUS  current
+    DESCRIPTION "This group defines the statistics for common thresholds thAlarmModule."
+    ::=  {  bwMtcMibGroups 7  }
+
+  broadworksmaintenanceAlarmsGrp OBJECT-GROUP
+    OBJECTS { aeIdentifier, aeTimeStamp, aeAlarmName, aeSeverity, aeCorrelationParameter, aeClearAlarm, aeResend, resetAlarmsTable, resendAlarmsTable, lastAlarmsTableModificationTimestamp }
+    STATUS  current
+    DESCRIPTION "This group defines the statistics for common alarms."
+    ::=  {  bwMtcMibGroups 8  }
+
+  broadworksmaintenanceHeapGrp OBJECT-GROUP
+    OBJECTS { bwSNMPProcessMetricsHeapInitSize, bwSNMPProcessMetricsHeapMaxSize, bwSNMPProcessMetricsHeapUsed, bwSNMPProcessMetricsHeapUsedMax, bwSNMPProcessMetricsHeapCommitted, bwSNMPProcessMetricsHeapLastPostCollectionSize }
+    STATUS  current
+    DESCRIPTION "This group defines the statistics for common snmpAgent processMetrics memory heap."
+    ::=  {  bwMtcMibGroups 9  }
+
+  broadworksmaintenanceNonheapGrp OBJECT-GROUP
+    OBJECTS { bwSNMPProcessMetricsNonHeapInitSize, bwSNMPProcessMetricsNonHeapMaxSize, bwSNMPProcessMetricsNonHeapUsed, bwSNMPProcessMetricsNonHeapUsedMax, bwSNMPProcessMetricsNonHeapCommitted, bwSNMPProcessMetricsNonHeapLastPostCollectionSize }
+    STATUS  current
+    DESCRIPTION "This group defines the statistics for common snmpAgent processMetrics memory nonheap."
+    ::=  {  bwMtcMibGroups 10  }
+
+  broadworksmaintenanceGarbageCollectionGrp OBJECT-GROUP
+    OBJECTS { bwSNMPProcessMetricsGCMinorCollectionsCount, bwSNMPProcessMetricsGCMajorCollectionsCount, bwSNMPProcessMetricsGCMinorCollectionTimestamp, bwSNMPProcessMetricsGCMajorCollectionTimestamp, bwSNMPProcessMetricsGCMinorCollectionAvg, bwSNMPProcessMetricsGCMajorCollectionAvg, bwSNMPProcessMetricsGCMajColResetTS, bwSNMPProcessMetricsGCMajColAvgCurrInt, bwSNMPProcessMetricsGCMajColAvgLastInt, bwSNMPProcessMetricsGCMinColResetTS, bwSNMPProcessMetricsGCMinColAvgCurrInt, bwSNMPProcessMetricsGCMinColAvgLastInt, bwSNMPProcessMetricsGCMinColTimeBetweenAvg, bwSNMPProcessMetricsGCMajColTimeBetweenAvg, bwSNMPProcessMetricsGCPauseTimeAvg, bwSNMPProcessMetricsGCPauseTimeMax, bwSNMPProcessMetricsGCPauseTimeMaxTimestamp, bwSNMPProcessMetricsGCMinColTimeBetweenResetTS, bwSNMPProcessMetricsGCMinColTimeBetweenAvgCurrInt, bwSNMPProcessMetricsGCMinColTimeBetweenAvgLastInt, bwSNMPProcessMetricsGCMajColTimeBetweenResetTS, bwSNMPProcessMetricsGCMajColTimeBetweenAvgCurrInt, bwSNMPProcessMetricsGCMajColTimeBetweenAvgLastInt, bwSNMPProcessMetricsGCPauseTimeResetTS, bwSNMPProcessMetricsGCPauseTimeAvgCurrInt, bwSNMPProcessMetricsGCPauseTimeAvgLastInt, bwSNMPProcessMetricsGCPauseTimeMaxCurrInt, bwSNMPProcessMetricsGCPauseTimeMaxLastInt, bwSNMPProcessMetricsGCPauseTimeMaxCurrIntTS, bwSNMPProcessMetricsGCPauseTimeMaxLastIntTS }
+    STATUS  current
+    DESCRIPTION "This group defines the statistics for common snmpAgent processMetrics memory garbageCollection."
+    ::=  {  bwMtcMibGroups 11  }
+
+  broadworksmaintenanceKafkaProducerStatsGrp OBJECT-GROUP
+    OBJECTS { bwSNMPKafkaProducerIndex, bwSNMPKafkaProducerName, bwSNMPKafkaProducerBatchSizeAvg, bwSNMPKafkaProducerBatchSizeMax, bwSNMPKafkaProducerBufferAvailableBytes, bwSNMPKafkaProducerBufferTotalBytes, bwSNMPKafkaProducerBufferpoolWaitTime, bwSNMPKafkaProducerConnectionCount, bwSNMPKafkaProducerRecordErrorRate, bwSNMPKafkaProducerRecordSendRate, bwSNMPKafkaProducerRecordErrorTotal, bwSNMPKafkaProducerRecordSendTotal, bwSNMPKafkaProducerRecordRetryRate, bwSNMPKafkaProducerRecordRetryTotal, bwSNMPKafkaProducerRecordQueueTimeAvg, bwSNMPKafkaProducerRecordQueueTimeMax, bwSNMPKafkaProducerRecordsPerRequestAvg, bwSNMPKafkaProducerRequestsInFlight, bwSNMPKafkaProducerRequestLatencyAvg, bwSNMPKafkaProducerRequestLatencyMax, bwSNMPKafkaProducerWaitingThreads, bwSNMPKafkaProducerCompressionRateAvg, bwSNMPKafkaProducerApplicationDroppedTotal, bwSNMPKafkaProducerApplicationQueueSize }
+    STATUS  current
+    DESCRIPTION "This group defines the statistics for common snmpAgent kafka kafkaProducerStats."
+    ::=  {  bwMtcMibGroups 12  }
+
+  broadworksmaintenanceKafkaLoggingStatsGrp OBJECT-GROUP
+    OBJECTS { bwSNMPKafkaLoggingIndex, bwSNMPKafkaLoggingSubsystemName, bwSNMPKafkaLoggingApplicationDroppedTotal, bwSNMPKafkaLoggingApplicationQueueSize, bwSNMPKafkaLoggingApplicationQueueCapacity }
+    STATUS  current
+    DESCRIPTION "This group defines the statistics for common snmpAgent kafka kafkaLoggingStats."
+    ::=  {  bwMtcMibGroups 13  }
+
+  broadworksmaintenanceReservedModuleGrp OBJECT-GROUP
+    OBJECTS { bwReservedScalar }
+    STATUS  current
+    DESCRIPTION "This group defines the statistics for common reservedModule."
+    ::=  {  bwMtcMibGroups 14  }
+
+  bwMoBasicCompliance MODULE-COMPLIANCE
+    STATUS      current
+    DESCRIPTION
+        "BroadworksMaintenance MIB compliance."
+    MODULE
+      MANDATORY-GROUPS { broadworksmaintenanceMoServerModuleGrp, broadworksmaintenanceMoSoftwareVersionModuleGrp,
+                         broadworksmaintenanceMoDeviceModuleGrp, broadworksmaintenanceMoApplicationsModuleGrp,
+                         broadworksmaintenanceThCounterModuleGrp, broadworksmaintenanceThGaugeModuleGrp,
+                         broadworksmaintenanceThAlarmModuleGrp, broadworksmaintenanceAlarmsGrp,
+                         broadworksmaintenanceHeapGrp, broadworksmaintenanceNonheapGrp,
+                         broadworksmaintenanceGarbageCollectionGrp, broadworksmaintenanceKafkaProducerStatsGrp,
+                         broadworksmaintenanceKafkaLoggingStatsGrp, broadworksmaintenanceReservedModuleGrp }
+    ::=  {  bwMtcMibCompliancy 1  }
+
+END

@@ -1,0 +1,237 @@
+--===============================================================
+-- File Name : BroadworksSystem.mib
+-- Author    : Cisco Inc.
+-- Copyright © 2022, Cisco, Inc. All rights reserved.
+-- Proprietary Property of Cisco, Inc.
+--===============================================================
+BroadworksSystem DEFINITIONS ::= BEGIN
+  IMPORTS
+    MODULE-COMPLIANCE, OBJECT-GROUP
+      FROM SNMPv2-CONF
+    enterprises, MODULE-IDENTITY, OBJECT-TYPE, Unsigned32, Counter32, Gauge32, Integer32
+      FROM SNMPv2-SMI
+    DateAndTime, DisplayString, TimeStamp, TruthValue
+      FROM SNMPv2-TC;
+
+  ciscoBroadWorksMIB  MODULE-IDENTITY
+    LAST-UPDATED  "201910040000Z"
+    ORGANIZATION  "Cisco Systems, Inc."
+    CONTACT-INFO  "Cisco Systems
+Customer Service
+Postal: 170 W Tasman Drive
+San Jose, CA  95134
+USA
+Tel: +1 800 553-NETS
+E-mail: tac@cisco.com"
+    DESCRIPTION
+        "This is the System Management Information structure for the BroadWorks System Stats (SAR) module."
+    REVISION    "201910040000Z"
+                DESCRIPTION    "Initial revision for BW-20387."
+    ::=  {  enterprises 6431  }
+
+  broadworks OBJECT IDENTIFIER
+    ::=  {  ciscoBroadWorksMIB 1  }
+
+  common OBJECT IDENTIFIER
+    ::=  {  broadworks 1  }
+
+  system OBJECT IDENTIFIER
+    ::=  {  common 11  }
+
+  stats OBJECT IDENTIFIER
+    ::=  {  system 1  }
+
+-- MIB Compliance - Root
+  bwSystemMibConformance OBJECT IDENTIFIER
+    ::=  {  system 1000  }
+
+  cpu OBJECT IDENTIFIER
+    ::=  {  stats 1  }
+
+  memory OBJECT IDENTIFIER
+    ::=  {  stats 2  }
+
+  devices OBJECT IDENTIFIER
+    ::=  {  stats 3  }
+
+-- MIB Compliance - Groups
+  bwSystemGroups OBJECT IDENTIFIER
+    ::=  {  bwSystemMibConformance 1  }
+
+-- MIB Compliance - Module
+  bwSystemCompliancy OBJECT IDENTIFIER
+    ::=  {  bwSystemMibConformance 2  }
+
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).system(11).stats(1).cpu(1)
+-- ###################
+
+  bwCPUUtilization OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Percentage of aggregated CPU utilization."
+-- @feature:BW-20387
+    ::=  {  cpu 1  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).system(11).stats(1).memory(2)
+-- ###################
+
+  bwPagesSwappedInPerSec OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Number of pages the system has swapped in from disk per second."
+-- @feature:BW-20387
+    ::=  {  memory 1  }
+
+-- ###################
+-- ciscoBroadWorksMIB(6431).broadworks(1).common(1).system(11).stats(1).devices(3)
+-- ###################
+
+  bwBlockDevicesTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF BwBlockDeviceEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+    "This table contains gauges for the block devices in the system."
+-- @feature:BW-20387
+    ::=  {  devices 1  }
+
+  bwBlockDeviceEntry OBJECT-TYPE
+    SYNTAX      BwBlockDeviceEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "This table contains statistics for system block devices."
+    INDEX       { bwBlockDeviceIndex }
+-- @feature:BW-20387
+    ::=  {  bwBlockDevicesTable 1  }
+
+  BwBlockDeviceEntry ::= SEQUENCE {
+    bwBlockDeviceIndex  Unsigned32,
+    bwBlockDeviceName  DisplayString,
+    bwBlockDeviceTransfersPerSec  Gauge32,
+    bwBlockDeviceSectorsReadPerSec  Gauge32,
+    bwBlockDeviceSectorsWrittenPerSec  Gauge32,
+    bwBlockDeviceUtilization  Gauge32,
+    bwBlockDeviceAwaitTimeInMilliSec  Gauge32,
+    bwBlockDeviceServiceTime  Gauge32,
+    bwBlockDeviceAverageQueueLength  Gauge32
+  }
+
+  bwBlockDeviceIndex OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+      "This integer represents an index in table bwBlockDevicesTable.  The index represents a single block device."
+-- @feature:BW-20387
+    ::=  {  bwBlockDeviceEntry 1  }
+
+  bwBlockDeviceName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Name of the device associated with the corresponding bwBlockDeviceIndex."
+-- @feature:BW-20387
+    ::=  {  bwBlockDeviceEntry 2  }
+
+  bwBlockDeviceTransfersPerSec OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Indicates the number of transfers per second that were issued to the device. associated with the corresponding bwBlockDeviceIndex."
+-- @feature:BW-20387
+    ::=  {  bwBlockDeviceEntry 3  }
+
+  bwBlockDeviceSectorsReadPerSec OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Number of kilobytes read per second from the device associated with the corresponding bwBlockDeviceIndex."
+-- @feature:BW-20387
+    ::=  {  bwBlockDeviceEntry 4  }
+
+  bwBlockDeviceSectorsWrittenPerSec OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Number of kilobytes written per second to the device associated with the corresponding bwBlockDeviceIndex."
+-- @feature:BW-20387
+    ::=  {  bwBlockDeviceEntry 5  }
+
+  bwBlockDeviceUtilization OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "Percentage of elapse time during which I/O requests were issued to the device  associated with the corresponding bwBlockDeviceIndex. (bandwidth utilization for the device)."
+-- @feature:BW-20387
+    ::=  {  bwBlockDeviceEntry 6  }
+
+  bwBlockDeviceAwaitTimeInMilliSec OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The average time (in milliseconds) for I/O requests issued to the device associated with the corresponding bwBlockDeviceIndex."
+-- @feature:BW-20387
+    ::=  {  bwBlockDeviceEntry 7  }
+
+  bwBlockDeviceServiceTime OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      obsolete
+    DESCRIPTION
+      "The average service time (in milliseconds) for I/O requests that were issued to the device associated with the corresponding bwBlockDeviceIndex."
+-- @feature:BW-20387
+    ::=  {  bwBlockDeviceEntry 8  }
+
+  bwBlockDeviceAverageQueueLength OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+      "The average queue length of the requests that were issued to device associated with the corresponding bwBlockDeviceIndex."
+-- @feature:BW-20387
+    ::=  {  bwBlockDeviceEntry 9  }
+
+-- BroadWorks MIB Conformance Definition  ...........................................
+
+  broadworkssystemCpuGrp OBJECT-GROUP
+    OBJECTS { bwCPUUtilization }
+    STATUS  current
+    DESCRIPTION "This group defines the statistics for system stats cpu."
+    ::=  {  bwSystemGroups 1  }
+
+  broadworkssystemMemoryGrp OBJECT-GROUP
+    OBJECTS { bwPagesSwappedInPerSec }
+    STATUS  current
+    DESCRIPTION "This group defines the statistics for system stats memory."
+    ::=  {  bwSystemGroups 2  }
+
+  broadworkssystemDevicesGrp OBJECT-GROUP
+    OBJECTS { bwBlockDeviceName, bwBlockDeviceTransfersPerSec, bwBlockDeviceSectorsReadPerSec, bwBlockDeviceSectorsWrittenPerSec, bwBlockDeviceUtilization, bwBlockDeviceAwaitTimeInMilliSec, bwBlockDeviceServiceTime, bwBlockDeviceAverageQueueLength }
+    STATUS  current
+    DESCRIPTION "This group defines the statistics for system stats devices."
+    ::=  {  bwSystemGroups 3  }
+
+  bwSystemBasicCompliance MODULE-COMPLIANCE
+    STATUS      current
+    DESCRIPTION
+        "BroadworksSystem MIB compliance."
+    MODULE
+      MANDATORY-GROUPS { broadworkssystemCpuGrp, broadworkssystemMemoryGrp,
+                         broadworkssystemDevicesGrp }
+    ::=  {  bwSystemCompliancy 1  }
+
+END

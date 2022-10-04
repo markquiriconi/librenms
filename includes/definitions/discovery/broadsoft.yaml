@@ -1,0 +1,46 @@
+mib: BroadworksMaintenance.mib:BroadworksSystem.mib
+modules:
+    os:
+        version: BroadworksMaintenance::bwActiveSoftwareVersion.0
+    sensors:
+        percent:
+            data:
+                -
+                    oid: BroadworksSystem::bwPagesSwappedInPerSec
+                    num_oid: '.1.3.6.1.4.1.6431.1.1.11.1.2.1.{{ $index }}'
+                    descr: 'Pages Swapped in per second'
+                    index: 'bwPagesSwappedInPerSec.{{ $index }}'
+                    warn_limit: 1
+                    high_limit: 2
+        state:
+            data:
+                -
+                    oid: BroadworksMaintenance::bwAdminState
+                    num_oid: '.1.3.6.1.4.1.6431.1.1.2.1.4.{{ $index }}'
+                    descr: 'Admin State :{{ $bwAdminState }}'
+                    index: 'bwAdminState.{{ $index }}'
+                    group: 'System State'
+                    state_name: bwAdminState
+                    states:
+                        - { descr: Locked, graph: 1, value: 0, generic: 2 }
+                        - { descr: Unlocked, graph: 1, value: 2, generic: 0 }
+                        - { descr: Force Locked, graph: 1, value: 5, generic: 2 }
+                -
+                    oid: BroadworksMaintenance::bwOperationalState
+                    num_oid: '.1.3.6.1.4.1.6431.1.1.2.1.5.{{ $index }}'
+                    descr: 'Operational State :{{ $bwOperationalState }}'
+                    index: 'bwOperationalState.{{ $index }}'
+                    group: 'System State'
+                    state_name: bwOperationalState
+                    states:
+                        - { descr: Enabled, graph: 1, value: 0, generic: 0 }
+                        - { descr: Disabled, graph: 1, value: 1, generic: 2 }
+    processors:
+        data:
+                -
+                    oid: BroadworksSystem::bwCPUUtilization
+                    num_oid: ' .1.3.6.1.4.1.6431.1.1.11.1.1.1{{ $index }}'
+                    descr: 'BW CPU Utilization :{{ $bwCPUUtilization }}'
+                    index: 'bwCPUUtilization.{{ $index }}'
+                    type: broadsoft
+
