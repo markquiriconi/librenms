@@ -99,6 +99,82 @@ modules:
                     descr: 'App Name: {{ BW-WebContainer::bwApplicationResourceWebAppName }}'
                     index: 'bwApplicationResourceRequestCount.{{ $index }}'
                     group: 'Broadsoft ADP Stats'
+                -
+                    oid: BW-Execution::bwSipStatsSetupSignalDelayAvgCurrInt
+                    num_oid: .1.3.6.1.4.1.6431.1.2.9.1.85.{{ $index }}'
+                    descr: 'Cross Office Signaling Delay Avg (in ms)'
+                    index: 'bwSipStatsSetupSignalDelayAvgCurrInt.{{ $index }}'
+                    group: 'Broadsoft AS Stats'
+                    warn_limit: 150
+                    high_limit: 200
+                -
+                    oid: BW-Execution::bwSipStatsAnswerSignalDelayAvgCurrInt
+                    num_oid: .1.3.6.1.4.1.6431.1.2.9.1.74.{{ $index }}'
+                    descr: '200 OK Avg Response Time (in ms)'
+                    index: 'bwSipStatsAnswerSignalDelayAvgCurrInt.{{ $index }}'
+                    group: 'Broadsoft AS Stats'
+                    warn_limit: 150
+                    high_limit: 200
+                -
+                    oid: BW-Execution::bwCallpActiveCalls
+                    num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.10.{{ $index }}' 
+                    descr: 'Active Call Sessions/Legs'
+                    index: 'bwCallpActiveCalls.{{ $index }}'
+                    group: 'Broadsoft AS Stats'
+                -
+                    oid: BW-Execution::bwCallpCallsPerSecond
+                    num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.12.{{ $index }}' 
+                    descr: 'Active Calls per Second'
+                    index: 'bwCallpCallsPerSecond.{{ $index }}'
+                    group: 'Broadsoft AS Stats'
+                -
+                    oid: BW-Execution::bwCallpNetworkOriginationAttempts
+                    num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.1.{{ $index }}' 
+                    descr: 'Outbound (non-CPE orig) from {{ $sysName }}'
+                    index: 'bwCallpNetworkOriginationAttempts.{{ $index }}'
+                    group: 'Broadsoft AS Stats'
+                -
+                    oid: BW-Execution::bwCallpNetworkTerminationAttempts
+                    num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.2.{{ $index }}' 
+                    descr: 'Outbound from CPE -> {{ $sysName }} -> Northbound'
+                    index: 'bwCallpNetworkTerminationAttempts.{{ $index }}'
+                    group: 'Broadsoft AS Stats'
+                -
+                    oid: BW-Execution::bwCallpNetworkTerminationsAnswered
+                    num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.3.{{ $index }}' 
+                    descr: 'Outbound from CPE -> {{ $sysName }} (answered)'
+                    index: 'bwCallpNetworkTerminationsAnswered.{{ $index }}'
+                    group: 'Broadsoft AS Stats'
+                -
+                    oid: BW-Execution::bwCallpUserOriginationAttempts
+                    num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.4.{{ $index }}' 
+                    descr: 'Outbound from CPE -> {{ $sysName }}'
+                    index: 'bwCallpUserOriginationAttempts.{{ $index }}'
+                    group: 'Broadsoft AS Stats'
+                -
+                    oid: BW-Execution::bwCallpUserTerminationAttempts
+                    num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.5.{{ $index }}' 
+                    descr: 'Inbound {{ $sysName }} -> CPE'
+                    index: 'bwCallpUserTerminationAttempts.{{ $index }}'
+                    group: 'Broadsoft AS Stats'
+                -
+                    oid: BW-Execution::bwCallpUserTerminationsAnswered
+                    num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.6.{{ $index }}' 
+                    descr: 'Inbound {{ $sysName }} -> CPE (answered)'
+                    index: 'bwCallpUserTerminationsAnswered.{{ $index }}'
+                    group: 'Broadsoft AS Stats'
+                -
+                    oid: BW-Execution::bwCallpEmergencyCallAttempts
+                    num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.7.{{ $index }}' 
+                    descr: 'CPE -> Emergency Call Attempts'
+                    index: 'bwCallpEmergencyCallAttempts.{{ $index }}'
+                    group: 'Broadsoft AS Stats'
+                -
+                    oid: BW-Execution::bwCallpEmergencyCallAlarms
+                    num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.8.{{ $index }}' 
+                    descr: 'Emergency Call Alarm Increment'
+                    index: 'bwCallpEmergencyCallAlarms.{{ $index }}'
+                    group: 'Broadsoft AS Stats'               
         percent:
             data:
                 -
