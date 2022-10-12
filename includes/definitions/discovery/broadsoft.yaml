@@ -1,4 +1,4 @@
-mib: BroadworksMaintenance.mib:BroadworksSystem.mib:BW-Provisioning.mib:BW-Execution.mib:BW-WebContainer.mib
+mib: BroadworksMaintenance:BroadworksSystem:BW-Provisioning:BW-Execution:BW-WebContainer:BW-BroadworksMediaServer
 modules:
     os:
         version: BroadworksMaintenance::bwActiveSoftwareVersion.0
@@ -7,6 +7,9 @@ modules:
             data:
                 -
                     oid: 
+                        - msMaxCapacityInPorts
+                        - msMaxCapacityInRtpSessions
+                        - msMaxIvrSessions
         count:
             data:
                 -
@@ -45,7 +48,7 @@ modules:
                     num_oid: '.1.3.6.1.4.1.6431.1.17.1.6.1.4.{{ $index }}'
                     descr: 'HTTP Req / sec'
                     index: 'bwHttpRequestsPerSecond.{{ $index }}'
-                    group: 'Broadsoft ADP Stats'
+                    group: 'Broadsoft ADP Statistics'
                     type: bwHttpRequestsPerSecond
                     skip_values:
                         -
@@ -57,7 +60,7 @@ modules:
                     num_oid: '.1.3.6.1.4.1.6431.1.17.1.6.1.5.{{ $index }}'
                     descr: 'HTTP Bytes / sec'
                     index: 'bwHttpBytesPerSecond.{{ $index }}'
-                    group: 'Broadsoft ADP Stats'
+                    group: 'Broadsoft ADP Statistics'
                     type: bwHttpBytesPerSecond
                     skip_values:
                         -
@@ -69,7 +72,7 @@ modules:
                     num_oid: '.1.3.6.1.4.1.6431.1.17.1.6.1.22.{{ $index }}'
                     descr: 'Last 5 Min Average HTTP Response Time (in ms)'
                     index: 'bwHttpResponseTimeAvg.{{ $index }}'
-                    group: 'Broadsoft ADP Stats'
+                    group: 'Broadsoft ADP Statistics'
                     type: bwHttpResponseTimeAvg
                     skip_values:
                         -
@@ -98,13 +101,13 @@ modules:
                     num_oid: '.1.3.6.1.4.1.6431.1.17.4.1.1.1.3.{{ $index }}'
                     descr: 'App Name: {{ BW-WebContainer::bwApplicationResourceWebAppName }}'
                     index: 'bwApplicationResourceRequestCount.{{ $index }}'
-                    group: 'Broadsoft ADP Stats'
+                    group: 'Broadsoft ADP Statistics'
                 -
                     oid: BW-Execution::bwSipStatsSetupSignalDelayAvgCurrInt
                     num_oid: .1.3.6.1.4.1.6431.1.2.9.1.85.{{ $index }}'
                     descr: 'Cross Office Signaling Delay Avg (in ms)'
                     index: 'bwSipStatsSetupSignalDelayAvgCurrInt.{{ $index }}'
-                    group: 'Broadsoft AS Stats'
+                    group: 'Broadsoft AS Statistics'
                     warn_limit: 150
                     high_limit: 200
                 -
@@ -112,7 +115,7 @@ modules:
                     num_oid: .1.3.6.1.4.1.6431.1.2.9.1.74.{{ $index }}'
                     descr: '200 OK Avg Response Time (in ms)'
                     index: 'bwSipStatsAnswerSignalDelayAvgCurrInt.{{ $index }}'
-                    group: 'Broadsoft AS Stats'
+                    group: 'Broadsoft AS Statistics'
                     warn_limit: 150
                     high_limit: 200
                 -
@@ -120,68 +123,111 @@ modules:
                     num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.10.{{ $index }}' 
                     descr: 'Active Call Sessions/Legs'
                     index: 'bwCallpActiveCalls.{{ $index }}'
-                    group: 'Broadsoft AS Stats'
+                    group: 'Broadsoft AS Statistics'
                 -
                     oid: BW-Execution::bwCallpCallsPerSecond
                     num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.12.{{ $index }}' 
                     descr: 'Active Calls per Second'
                     index: 'bwCallpCallsPerSecond.{{ $index }}'
-                    group: 'Broadsoft AS Stats'
+                    group: 'Broadsoft AS Statistics'
                 -
                     oid: BW-Execution::bwCallpNetworkOriginationAttempts
                     num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.1.{{ $index }}' 
                     descr: 'Outbound (non-CPE orig) from AS'
                     index: 'bwCallpNetworkOriginationAttempts.{{ $index }}'
-                    group: 'Broadsoft AS Stats'
+                    group: 'Broadsoft AS Statistics'
                 -
                     oid: BW-Execution::bwCallpNetworkTerminationAttempts
                     num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.2.{{ $index }}' 
                     descr: 'Outbound from CPE -> AS -> Northbound'
                     index: 'bwCallpNetworkTerminationAttempts.{{ $index }}'
-                    group: 'Broadsoft AS Stats'
+                    group: 'Broadsoft AS Statistics'
                 -
                     oid: BW-Execution::bwCallpNetworkTerminationsAnswered
                     num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.3.{{ $index }}' 
                     descr: 'Outbound from CPE -> AS (answered)'
                     index: 'bwCallpNetworkTerminationsAnswered.{{ $index }}'
-                    group: 'Broadsoft AS Stats'
+                    group: 'Broadsoft AS Statistics'
                 -
                     oid: BW-Execution::bwCallpUserOriginationAttempts
                     num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.4.{{ $index }}' 
                     descr: 'Outbound from CPE -> AS'
                     index: 'bwCallpUserOriginationAttempts.{{ $index }}'
-                    group: 'Broadsoft AS Stats'
+                    group: 'Broadsoft AS Statistics'
                 -
                     oid: BW-Execution::bwCallpUserTerminationAttempts
                     num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.5.{{ $index }}' 
                     descr: 'Inbound AS -> CPE'
                     index: 'bwCallpUserTerminationAttempts.{{ $index }}'
-                    group: 'Broadsoft AS Stats'
+                    group: 'Broadsoft AS Statistics'
                 -
                     oid: BW-Execution::bwCallpUserTerminationsAnswered
                     num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.6.{{ $index }}' 
                     descr: 'Inbound AS -> CPE (answered)'
                     index: 'bwCallpUserTerminationsAnswered.{{ $index }}'
-                    group: 'Broadsoft AS Stats'
+                    group: 'Broadsoft AS Statistics'
                 -
                     oid: BW-Execution::bwCallpEmergencyCallAttempts
                     num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.7.{{ $index }}' 
                     descr: 'CPE -> Emergency Call Attempts'
                     index: 'bwCallpEmergencyCallAttempts.{{ $index }}'
-                    group: 'Broadsoft AS Stats'
+                    group: 'Broadsoft AS Statistics'
                 -
                     oid: BW-Execution::bwCallpEmergencyCallAlarms
                     num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.8.{{ $index }}' 
                     descr: 'Emergency Call Alarm Increment'
                     index: 'bwCallpEmergencyCallAlarms.{{ $index }}'
-                    group: 'Broadsoft AS Stats'
+                    group: 'Broadsoft AS Statistics'
                 -
                     oid: BW-Provisioning::psOciStatsSystemRequestsPerHour
                     num_oid: '.1.3.6.1.4.1.6431.1.6.8.1.10.{{ $index }}'
                     descr: 'OCI Prov Requests per second'
                     index: 'psOciStatsSystemRequestsPerHour.{{ $index }}'
-                    group: 'Broadsoft AS Stats'     
+                    group: 'Broadsoft AS Statistics'     
                     divisor: 3600
+                -
+                    oid: BW-BroadworksMediaServer::msPortsInUse
+                    num_oid: '.1.3.6.1.4.1.6431.1.3.1.5.{{ $index }}'
+                    descr: 'Total Ports in Use'
+                    index: 'msPortsInUse.{{ $index }}'
+                    group: 'Broadsoft MS Statistics'
+                    warn_limit: 12000
+                    high_limit: msMaxCapacityInPorts
+                -
+                    oid: BW-BroadworksMediaServer::msNoPortAvailableErrors
+                    num_oid: '.1.3.6.1.4.1.6431.1.3.1.6.{{ $index }}'
+                    descr: 'No Port Avail Errors'
+                    index: 'msNoPortAvailableErrors.{{ $index }}'
+                    group: 'Broadsoft MS Statistics'
+                    warn_limit: 1
+                    high_limit: 5
+                -
+                    oid: BW-BroadworksMediaServer::msIvrSessionsInUse
+                    num_oid: '.1.3.6.1.4.1.6431.1.3.1.4.44.{{ $index }}'
+                    descr: 'IVR Sessions in Use'
+                    index: 'msIvrSessionsInUse.{{ $index }}'
+                    group: 'Broadsoft MS Statistics'
+                    high_limit: msMaxIvrSessions
+                -
+                    oid: BW-BroadworksMediaServer::msIvrSessionCount
+                    num_oid: '.1.3.6.1.4.1.6431.1.3.1.4.16.{{ $index }}'
+                    descr: 'IVR Session Total Count'
+                    index: 'msIvrSessionCount.{{ $index }}'
+                    group: 'Broadsoft MS Statistics'
+                -
+                    oid: BW-BroadworksMediaServer::msRtpSessionsInUse
+                    num_oid: '.1.3.6.1.4.1.6431.1.3.2.4.{{ $index }}'
+                    descr:  'RTP Sessions in Use'
+                    index: 'msRtpSessionsInUse.{{ $index }}'
+                    group: 'Broadsoft MS Statistics'
+                    high_limit: msMaxCapacityInRtpSessions
+                -
+                    oid: BW-BroadworksMediaServer::msRtpSessionsCount
+                    num_oid: '.1.3.6.1.4.1.6431.1.3.2.1.{{ $index }}'
+                    descr:  'RTP Session Total Count'
+                    index: 'msRtpSessionsCount.{{ $index }}'
+                    group: 'Broadsoft MS Statistics'
+                    
         percent:
             data:
                 -
