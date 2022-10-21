@@ -1,4 +1,4 @@
-mib: BroadworksMaintenance:BroadworksSystem:BW-Provisioning:BW-Execution:BW-WebContainer:BW-BroadworksMediaServer
+mib: BroadworksMaintenance:BroadworksSystem:BW-Provisioning:BW-Execution:BW-WebContainer:BW-BroadworksMediaServer:BroadworksConfiguration:BW-FileRepos
 modules:
     os:
         version: BroadworksMaintenance::bwActiveSoftwareVersion.0
@@ -251,7 +251,54 @@ modules:
                     descr: 'Total # of Failed Annc Req'
                     index: 'BW-BroadworksMediaServer::msAnncFailedRequestsCount.{{ $index }}'
                     group: 'Broadsoft MS Statistics'
-                    
+                -
+                    oid: BroadworksConfiguration::cfgReadOperations
+                    num_oid: '.1.3.6.1.4.1.6431.1.1.5.3.1.{{ $index }}'
+                    descr: 'Total # of successful read operations'
+                    index: 'BroadworksConfiguration::cfgReadOperations.{{ $index }}'
+                    group: 'Broadsoft NS Statistics'
+                -
+                    oid: BroadworksConfiguration::cfgReadErrors
+                    num_oid: '.1.3.6.1.4.1.6431.1.1.5.3.2.{{ $index }}'
+                    descr: 'Total # of failed read operations'
+                    index: 'BroadworksConfiguration::cfgReadErrors.{{ $index }}'
+                    group: 'Broadsoft NS Statistics'
+                -
+                    oid: BroadworksConfiguration::cfgWriteOperations
+                    num_oid: '.1.3.6.1.4.1.6431.1.1.5.3.3.{{ $index }}'
+                    descr: 'Total # of successful write operations'
+                    index: 'BroadworksConfiguration::cfgWriteOperations.{{ $index }}'
+                    group: 'Broadsoft NS Statistics'
+                -
+                    oid: BroadworksConfiguration::cfgWriteErrors
+                    num_oid: '.1.3.6.1.4.1.6431.1.1.5.3.4.{{ $index }}'
+                    descr: 'Total # of failed write operations'
+                    index: 'BroadworksConfiguration::cfgWriteErrors.{{ $index }}'
+                    group: 'Broadsoft NS Statistics'
+                -
+                    oid: BW-FileRepos::bwFileReposReplicationRxSuccessful
+                    num_oid: '.1.3.6.1.4.1.6431.1.35.2.1.1.3.1'
+                    descr: 'Successful Replication Requests'
+                    index: 'BW-FileRepos::bwFileReposReplicationRxSuccessful'
+                    group: 'Broadsoft PS Statistics'
+                -
+                    oid: BW-FileRepos::bwFileReposReplicationRxFailed
+                    num_oid: '.1.3.6.1.4.1.6431.1.35.2.1.1.4.1'
+                    descr: 'Failed Replication Requests'
+                    index: 'BW-FileRepos::bwFileReposReplicationRxFailed'
+                    group: 'Broadsoft PS Statistics'
+                -
+                    oid: BW-FileRepos::bwFileReposReplicationTxSuccessful
+                    num_oid: '.1.3.6.1.4.1.6431.1.35.2.1.1.5.1'
+                    descr: 'Successful Replication Transmits'
+                    index: 'BW-FileRepos::bwFileReposReplicationTxSuccessful'
+                    group: 'Broadsoft PS Statistics'
+                -
+                    oid: BW-FileRepos::bwFileReposReplicationTxFailed
+                    num_oid: '.1.3.6.1.4.1.6431.1.35.2.1.1.6.1'
+                    descr: 'Successful Replication Transmits'
+                    index: 'BW-FileRepos::bwFileReposReplicationTxFailed'
+                    group: 'Broadsoft PS Statistics'
         percent:
             data:
                 -
