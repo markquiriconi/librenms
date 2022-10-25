@@ -18,8 +18,7 @@ modules:
                     descr: 'Page Swap per second'
                     index: 'bwPagesSwappedInPerSec.{{ $index }}'
                     group: 'Broadsoft System Statistics'
-                    warn_limit: 1
-                    high_limit: 2
+                    warn_limit: 2
                     type: bwPagesSwappedInPerSec
                 -
                     oid: BW-Execution::bwNumberOfUsers
@@ -27,22 +26,12 @@ modules:
                     descr: 'Number of Users'
                     index: 'bwNumberOfUsers.{{ $index }}'
                     group: 'Broadsoft System Statistics'
-                    skip_values:
-                        -
-                            oid: BW-Execution::bwNumberOfUsers
-                            op: 'exists'
-                            value: false
                 -
                     oid: BW-Execution::bwNumberOfNonVirtualUsers
                     num_oid: '.1.3.6.1.4.1.6431.1.2.16.1.13.{{ $index }}'
                     descr: 'Number of NonVirtual Users'
                     index: 'bwNumberOfNonVirtualUsers.{{ $index }}'
                     group: 'Broadsoft System Statistics'
-                    skip_values:
-                        -
-                            oid: BW-Execution::bwNumberOfNonVirtualUsers
-                            op: 'exists'
-                            value: false
                 -
                     oid: BW-WebContainer::bwHttpRequestsPerSecond
                     num_oid: '.1.3.6.1.4.1.6431.1.17.1.6.1.4.{{ $index }}'
@@ -50,11 +39,6 @@ modules:
                     index: 'bwHttpRequestsPerSecond.{{ $index }}'
                     group: 'Broadsoft ADP Statistics'
                     type: bwHttpRequestsPerSecond
-                    skip_values:
-                        -
-                            oid: BW-WebContainer::bwHttpRequestsPerSecond
-                            op: 'exists'
-                            value: false
                 -
                     oid: BW-WebContainer::bwHttpBytesPerSecond
                     num_oid: '.1.3.6.1.4.1.6431.1.17.1.6.1.5.{{ $index }}'
@@ -62,11 +46,6 @@ modules:
                     index: 'bwHttpBytesPerSecond.{{ $index }}'
                     group: 'Broadsoft ADP Statistics'
                     type: bwHttpBytesPerSecond
-                    skip_values:
-                        -
-                            oid: BW-WebContainer::bwHttpBytesPerSecond
-                            op: 'exists'
-                            value: false
                 -
                     oid: BW-WebContainer::bwHttpResponseTimeAvg
                     num_oid: '.1.3.6.1.4.1.6431.1.17.1.6.1.22.{{ $index }}'
@@ -74,11 +53,6 @@ modules:
                     index: 'bwHttpResponseTimeAvg.{{ $index }}'
                     group: 'Broadsoft ADP Statistics'
                     type: bwHttpResponseTimeAvg
-                    skip_values:
-                        -
-                            oid: BW-WebContainer::bwHttpResponseTimeAvg
-                            op: 'exists'
-                            value: false
                 -
                     oid: BW-WebContainer::bwHttpOverallResponsesTable
                     value: BW-WebContainer::bwHttpOverallResponsesNbOfResponses
@@ -86,6 +60,7 @@ modules:
                     descr: 'HTTP GET Response: {{ BW-WebContainer::bwHttpOverallResponsesStatusCode }}'
                     index: 'bwHttpOverallResponsesNbOfResponses.{{ $index }}'
                     group: 'Broadsoft ADP Responses'
+                    rrd_type: COUNTER
                     skip_values:
                         -
                             oid: BW-WebContainer::bwHttpOverallResponsesStatusCode
@@ -102,6 +77,7 @@ modules:
                     descr: 'App Name: {{ BW-WebContainer::bwApplicationResourceWebAppName }}'
                     index: 'bwApplicationResourceRequestCount.{{ $index }}'
                     group: 'Broadsoft ADP Statistics'
+                    rrd_type: COUNTER
                 -
                     oid: BW-Execution::bwSipStatsSetupSignalDelayAvgCurrInt
                     num_oid: .1.3.6.1.4.1.6431.1.2.9.1.85.{{ $index }}'
@@ -136,36 +112,42 @@ modules:
                     descr: 'Outbound (non-CPE orig) from AS'
                     index: 'bwCallpNetworkOriginationAttempts.{{ $index }}'
                     group: 'Broadsoft AS Statistics'
+                    rrd_type: COUNTER
                 -
                     oid: BW-Execution::bwCallpNetworkTerminationAttempts
                     num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.2.{{ $index }}' 
                     descr: 'Outbound from CPE -> AS -> Northbound'
                     index: 'bwCallpNetworkTerminationAttempts.{{ $index }}'
                     group: 'Broadsoft AS Statistics'
+                    rrd_type: COUNTER
                 -
                     oid: BW-Execution::bwCallpNetworkTerminationsAnswered
                     num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.3.{{ $index }}' 
                     descr: 'Outbound from CPE -> AS (answered)'
                     index: 'bwCallpNetworkTerminationsAnswered.{{ $index }}'
                     group: 'Broadsoft AS Statistics'
+                    rrd_type: COUNTER
                 -
                     oid: BW-Execution::bwCallpUserOriginationAttempts
                     num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.4.{{ $index }}' 
                     descr: 'Outbound from CPE -> AS'
                     index: 'bwCallpUserOriginationAttempts.{{ $index }}'
                     group: 'Broadsoft AS Statistics'
+                    rrd_type: COUNTER
                 -
                     oid: BW-Execution::bwCallpUserTerminationAttempts
                     num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.5.{{ $index }}' 
                     descr: 'Inbound AS -> CPE'
                     index: 'bwCallpUserTerminationAttempts.{{ $index }}'
                     group: 'Broadsoft AS Statistics'
+                    rrd_type: COUNTER
                 -
                     oid: BW-Execution::bwCallpUserTerminationsAnswered
                     num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.6.{{ $index }}' 
                     descr: 'Inbound AS -> CPE (answered)'
                     index: 'bwCallpUserTerminationsAnswered.{{ $index }}'
                     group: 'Broadsoft AS Statistics'
+                    rrd_type: COUNTER
                 -
                     oid: BW-Execution::bwCallpEmergencyCallAttempts
                     num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.7.{{ $index }}' 
@@ -208,6 +190,7 @@ modules:
                     descr: 'No Port Avail Errors'
                     index: 'msNoPortAvailableErrors.{{ $index }}'
                     group: 'Broadsoft MS Statistics'
+                    rrd_type: COUNTER
                     warn_limit: 1
                     high_limit: 5
                 -
@@ -254,60 +237,70 @@ modules:
                     descr: 'Total # of Annc Req'
                     index: 'BW-BroadworksMediaServer::msAnncRequestsCount.{{ $index }}'
                     group: 'Broadsoft MS Statistics'
+                    rrd_type: COUNTER
                 -
                     oid: BW-BroadworksMediaServer::msAnncFailedRequestsCount
                     num_oid: '.1.3.6.1.4.1.6431.1.3.15.2.{ $index }}'
                     descr: 'Total # of Failed Annc Req'
                     index: 'BW-BroadworksMediaServer::msAnncFailedRequestsCount.{{ $index }}'
                     group: 'Broadsoft MS Statistics'
+                    rrd_type: COUNTER
                 -
                     oid: BroadworksConfiguration::cfgReadOperations
                     num_oid: '.1.3.6.1.4.1.6431.1.1.5.3.1.{{ $index }}'
-                    descr: 'Total # of successful read operations'
+                    descr: 'Successful read operations'
                     index: 'BroadworksConfiguration::cfgReadOperations.{{ $index }}'
                     group: 'Broadsoft NS Statistics'
+                    rrd_type: COUNTER
                 -
                     oid: BroadworksConfiguration::cfgReadErrors
                     num_oid: '.1.3.6.1.4.1.6431.1.1.5.3.2.{{ $index }}'
-                    descr: 'Total # of failed read operations'
+                    descr: 'Failed read operations'
                     index: 'BroadworksConfiguration::cfgReadErrors.{{ $index }}'
                     group: 'Broadsoft NS Statistics'
+                    rrd_type: COUNTER
                 -
                     oid: BroadworksConfiguration::cfgWriteOperations
                     num_oid: '.1.3.6.1.4.1.6431.1.1.5.3.3.{{ $index }}'
-                    descr: 'Total # of successful write operations'
+                    descr: 'Successful write operations'
                     index: 'BroadworksConfiguration::cfgWriteOperations.{{ $index }}'
                     group: 'Broadsoft NS Statistics'
+                    rrd_type: COUNTER
                 -
                     oid: BroadworksConfiguration::cfgWriteErrors
                     num_oid: '.1.3.6.1.4.1.6431.1.1.5.3.4.{{ $index }}'
-                    descr: 'Total # of failed write operations'
+                    descr: 'Failed write operations'
                     index: 'BroadworksConfiguration::cfgWriteErrors.{{ $index }}'
                     group: 'Broadsoft NS Statistics'
+                    rrd_type: COUNTER
                 -
                     oid: BW-FileRepos::bwFileReposReplicationRxSuccessful
                     num_oid: '.1.3.6.1.4.1.6431.1.35.2.1.1.3.1'
                     descr: 'Successful Replication Requests'
                     index: 'BW-FileRepos::bwFileReposReplicationRxSuccessful'
                     group: 'Broadsoft PS Statistics'
+                    rrd_type: COUNTER
                 -
                     oid: BW-FileRepos::bwFileReposReplicationRxFailed
                     num_oid: '.1.3.6.1.4.1.6431.1.35.2.1.1.4.1'
                     descr: 'Failed Replication Requests'
                     index: 'BW-FileRepos::bwFileReposReplicationRxFailed'
                     group: 'Broadsoft PS Statistics'
+                    rrd_type: COUNTER
                 -
                     oid: BW-FileRepos::bwFileReposReplicationTxSuccessful
                     num_oid: '.1.3.6.1.4.1.6431.1.35.2.1.1.5.1'
                     descr: 'Successful Replication Transmits'
                     index: 'BW-FileRepos::bwFileReposReplicationTxSuccessful'
                     group: 'Broadsoft PS Statistics'
+                    rrd_type: COUNTER
                 -
                     oid: BW-FileRepos::bwFileReposReplicationTxFailed
                     num_oid: '.1.3.6.1.4.1.6431.1.35.2.1.1.6.1'
                     descr: 'Successful Replication Transmits'
                     index: 'BW-FileRepos::bwFileReposReplicationTxFailed'
                     group: 'Broadsoft PS Statistics'
+                    rrd_type: COUNTER
         percent:
             data:
                 -
