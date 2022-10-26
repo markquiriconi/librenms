@@ -94,7 +94,7 @@ modules:
                     rrd_type: COUNTER
                 -
                     oid: BW-Execution::bwSipStatsSetupSignalDelayAvgCurrInt
-                    num_oid: .1.3.6.1.4.1.6431.1.2.9.1.85.{{ $index }}'
+                    num_oid: '.1.3.6.1.4.1.6431.1.2.9.1.85.{{ $index }}'
                     descr: 'Cross Office Signaling Delay Avg (in ms)'
                     index: 'bwSipStatsSetupSignalDelayAvgCurrInt.{{ $index }}'
                     group: 'Broadsoft AS Statistics'
@@ -102,12 +102,19 @@ modules:
                     high_limit: 200
                 -
                     oid: BW-Execution::bwSipStatsAnswerSignalDelayAvgCurrInt
-                    num_oid: .1.3.6.1.4.1.6431.1.2.9.1.74.{{ $index }}'
+                    num_oid: '.1.3.6.1.4.1.6431.1.2.9.1.74.{{ $index }}'
                     descr: '200 OK Avg Response Time (in ms)'
                     index: 'bwSipStatsAnswerSignalDelayAvgCurrInt.{{ $index }}'
                     group: 'Broadsoft AS Statistics'
                     warn_limit: 150
                     high_limit: 200
+                -
+                    oid: BW-Execution::bwSipStatsRegisterIns
+                    num_oid: '.1.3.6.1.4.1.6431.1.2.9.1.12.{{ $index }}'
+                    descr: 'Received REGISTER Events'
+                    index: 'bwSipStatsRegisterIns.{{ $index }}'
+                    group: 'Broadsoft AS Statistics'
+                    rrd_type: COUNTER
                 -
                     oid: BW-Execution::bwCallpActiveCalls
                     num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.10.{{ $index }}' 
@@ -172,7 +179,7 @@ modules:
                 -
                     oid: BW-Execution::bwCallpEmergencyCallAlarms
                     num_oid: '.1.3.6.1.4.1.6431.1.2.7.1.8.{{ $index }}' 
-                    descr: 'Emergency Call Alarm Increment'
+                    descr: 'Emergency Call Alarms Triggered'
                     index: 'bwCallpEmergencyCallAlarms.{{ $index }}'
                     group: 'Broadsoft AS Statistics'
                     rrd_type: COUNTER
