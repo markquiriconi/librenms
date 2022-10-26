@@ -214,6 +214,28 @@ modules:
                     rrd_type: COUNTER
                     warn_limit: 1
                     high_limit: 5
+                -   
+                    oid: BW-BroadworksMediaServer::msTotalSizeDownloadedFiles
+                    num_oid: '.1.3.6.1.4.1.6431.1.3.5.1.{{ $index }}'
+                    descr: 'MS File Transfer Amount (in MB)'
+                    index: 'msTotalSizeDownloadedFiles.{{ $index }}'
+                    group: 'Broadsoft MS Statistics'
+                    divisor: 1048576
+                    rrd_type: COUNTER
+                -   
+                    oid: BW-BroadworksMediaServer::msFilesDownloaded
+                    num_oid: '.1.3.6.1.4.1.6431.1.3.5.2.{{ $index }}'
+                    descr: 'MS Files Downloaded'
+                    index: 'msFilesDownloaded.{{ $index }}'
+                    group: 'Broadsoft MS Statistics'
+                    rrd_type: COUNTER
+                -   
+                    oid: BW-BroadworksMediaServer::msFilesRetrievedFromCache
+                    num_oid: '.1.3.6.1.4.1.6431.1.3.5.3.{{ $index }}'
+                    descr: 'MS Files Retrieved from Cache'
+                    index: 'msFilesRetrievedFromCache.{{ $index }}'
+                    group: 'Broadsoft MS Statistics'
+                    rrd_type: COUNTER
                 -
                     oid: BW-BroadworksMediaServer::msIvrSessionsInUse
                     num_oid: '.1.3.6.1.4.1.6431.1.3.1.4.44.{{ $index }}'
